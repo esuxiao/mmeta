@@ -122,8 +122,6 @@ events in clinical trials. \cr
 }
 
 
-
-
 \seealso{\code{\link{multipletables}}
 \code{\link{plot.singletable}}
 \code{\link{summary.singletable}}
@@ -131,6 +129,8 @@ events in clinical trials. \cr
 
 \examples{
 \donttest{
+oldpar <- par(no.readonly = TRUE)
+
 # Inference under Jeffreys prior distribution
 single.OR.Jeffreys <- singletable(a1=0.5, b1=0.5, a2=0.5,
                                   b2=0.5, y1=40, n1=96, y2=49, n2=109,
@@ -169,6 +169,8 @@ plot(single.OR.Sar1, type="overlap", xlim=c(0.5, 2),
      main=expression(paste("Sarmanov Prior ",rho," = 0.5")))
 plot(single.OR.Sar2, type="overlap", xlim=c(0.5, 2),
      main=expression(paste("Sarmanov Prior ",rho," = -0.5")))
+     
+par(oldpar)
 }
 }
 

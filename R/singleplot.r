@@ -36,6 +36,9 @@ plot.singletable <- function(x,type=type,select=c(1,2),
 ################################################################################################
 sideplot_single <- function(object,select=c(1,2),xlab=NULL,ylab=NULL,xlim=NULL,
                             ylim=NULL,addline=NULL,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   alpha <- object$alpha
   measure <- object$measure
   nselect <- length(select)
