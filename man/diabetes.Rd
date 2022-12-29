@@ -28,11 +28,14 @@
 \references{
 Chen, Y., Luo, S., Chu, H., Su, X., and Nie, L. (2012a). An empirical
 Bayes method for multivariate meta-analysis with an application in
-clinical trials. in press, Communication in Statistics:
-Theory and Methods.
+clinical trials. \cr
+\emph{Communication in Statistics: Theory and Methods}. \cr
+<https://doi.org/10.1080/03610926.2012.700379> \cr
 
 Bellamy, L, Casas, J.P., Hingorani, A.D., Williams, D. (2009) Type 2 diabetes mellitus after gestational
-diabetes: a systematic review and meta-analysis. The Lancet 373(9677):1773-1779
+diabetes: a systematic review and meta-analysis. \cr
+\emph{The Lancet} 373(9677):1773-1779 \cr
+<doi:10.1097/01.aoa.0000370496.77221.05> \cr
 }
 
 
@@ -51,9 +54,11 @@ of relative risk and risk difference for multiple 2X2 tables.
 }
 
 \examples{
+\donttest{
 library(mmeta)
 data(diabetes)
 summary(diabetes)
+}
 }
 
 \keyword{datasets}

@@ -2,15 +2,33 @@ Package: mmeta
 Type: Package
 Title: Multivariate Meta-Analysis
 Version: 2.4
-Date: 2022-11-04
-Author: Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
+Date: 2022-11-30
+Author@R: c(person("Sheng", "Luo", role="aut"), 
+            person("Yong", "Chen", role ="aut", email = "ychen123@pennmedicine.upenn.edu" ), 
+            person("Xiao", "Su", role = "aut"), 
+            person("Haitao", "Chu", role = "aut"),
+            person("Jiajie", "Chen", role = "cre", email = "jiajie.chen@pennmedicine.upenn.edu"),
+            peroson("Wally", "Gilks", role = "ctb"),
+            person("Giovanni", "Petris", role = "ctb"),
+            person("Luca", "Tardella", role = "ctb"))
 Maintainer: Jiajie Chen <jiajie.chen@pennmedicine.upenn.edu>
-Description: A novel multivariate meta-analysis.
+Description: Multiple 2 by 2 tables often arise in meta-analysis which combines statistical evidence from multiple studies. Two risks within the same study are possibly correlated because they share some common factors such as environment and population structure. This package implements a set of novel Bayesian approaches for multivariate meta analysis when the risks within the same study are independent or correlated.  The exact posterior inference of odds ratio, relative risk, and risk difference given either a single 2 by 2 table or multiple 2 by 2 tables is provided. 
 Depends: R (>= 2.10.0)
 Imports: aod
 License: GPL (>= 2)
 LazyLoad: no
-Packaged: 2017-03-27 15:19:52 UTC; xsu2
+Packaged: 2022-11-06 17:36:56 UTC; chenjiajie
 NeedsCompilation: yes
+Author: Sheng Luo [aut],
+  Yong Chen [aut],
+  Xiao Su [aut],
+  Haitao Chu [aut],
+  Jiajie Chen [cre],
+  Wally Gillks [ctb],
+  Giovanni Petris [ctb],
+  Luca Tardella [ctb]
 Repository: CRAN
 Date/Publication: 2017-03-28 06:00:09 UTC
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
