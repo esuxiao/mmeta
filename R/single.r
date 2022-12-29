@@ -12,8 +12,8 @@ singletable <- function(y1=y1,n1=n1,y2=y2,n2=n2,measure=measure,model="Sarmanov"
                         nsam=10000) {
   
   if (measure=="RD"& method=="exact") {
-    print("only sampling based mehtod is available for RD")
-    method <- "sampling"
+    stop("only sampling based mehtod is available for RD \n")
+##    method <- "sampling"
   }
   if (!model%in%c("Sarmanov","Independent")) stop("Only \'Independent\' and \'Sarmanov\' are supported. ")
 
@@ -50,9 +50,9 @@ singletable <- function(y1=y1,n1=n1,y2=y2,n2=n2,measure=measure,model="Sarmanov"
     lower.bound <- -cc/max(a1*a2, b1*b2)
     rho.range<-c(lower.bound,upper.bound)
     names(rho.range)<-c("lower.bound","upper.bound")
-    cat("Range of corelation (rho)",fill=T)
-    cat("Lower bound:", rho.range[1],fill=T)
-    cat("Upper bound:",rho.range[2],fill=T)
+   message("Range of corelation (rho)")
+   message("Lower bound:", rho.range[1])
+   message("Upper bound:",rho.range[2])
     if (rho > upper.bound | rho < lower.bound) stop(paste("rho is out of bound: ",
     lower.bound, upper.bound))
   }
