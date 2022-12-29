@@ -29,12 +29,15 @@
 \references{
 Chen, Y., Chu, H., Luo, S., Nie, L., and Chen, S. (2011b). Bayesian
 analysis on meta-analysis of case-control studies accounting for
-within-study correlation. Statistical Methods in Medical Research,
-Published online on Dec 4, 2011, PMID: 22143403. doi: 10.1177/0962280211430889
+within-study correlation. \cr 
+\emph{Statistical Methods in Medical Research},Published online on Dec 4, 2011, PMID: 22143403. \cr
+<doi:10.1177/0962280211430889>. \cr
 
 Ye, Z. and Parry, J. (2002) Meta-analysis of 20 case-control studies
 on the N -acetyltransferase 2 acetylation status and
-colorectal cancer risk. Med Sci Monit 8, CR558-65.
+colorectal cancer risk. \cr 
+\emph{Med Sci Monit 8}, CR558-65. \cr
+\url{https://medscimonit.com/abstract/index/idArt/13598}. \cr
 }
 
 \note{
@@ -51,9 +54,11 @@ inference of odds ratio for multiple 2X2 tables.
 }
 
 \examples{
+\donttest{
 library(mmeta)
 data(colorectal)
 summary(colorectal)
+}
 }
 
 \keyword{datasets}
