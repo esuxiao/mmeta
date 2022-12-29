@@ -10,16 +10,17 @@ importFrom("stats", "rnorm", "runif")
 useDynLib(mmeta,.registration = TRUE)
 
 # Exported functions
-export(singletable,multipletables,
-        plot.multipletables,  summary.multipletables, 
-       plot.singletable, summary.singletable
+export(SingleTable.create,
+        SingleTable.modelFit,
+        SingleTable.summary,  
+        SingleTable.plot, 
+        MultipleTables.create, 
+        MultipleTables.modelFit,
+        MultipleTables.summary,
+        MultipleTables.plot
        )
        
        
-#S3 methods
-S3method(plot,multipletables)
-S3method(summary,multipletables)
-S3method(summary, singletable)
-S3method(plot, singletable)
+
 
 
