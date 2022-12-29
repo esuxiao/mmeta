@@ -8,10 +8,10 @@
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ######################################################################################
-summary.singletable <- function(object,...) {
+summary.singletable <- function(object,verbose=TRUE,...) {
   if (!inherits(object, "singletable"))
     stop("Use only with 'singletable' objects.\n")
-	result <- summary_single_sampling(object)
+	result <- summary_single_sampling(object,verbose)
   invisible(result)
 }
 
@@ -23,7 +23,7 @@ summary.singletable <- function(object,...) {
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ######################################################################################
-summary.multipletables <- function(object,...) {
+summary.multipletables <- function(object,verbose=TRUE,...) {
   if (!inherits(object, "multipletables"))
     stop("Use only with 'multipletables' objects.\n")
 
@@ -37,36 +37,40 @@ summary.multipletables <- function(object,...) {
   studynames <- object$studynames
 
   siglevel <- paste(as.character((1-alpha)*100),"%",sep="")
-
-  if (model=="Sarmanov") cat("Model: Sarmanov Beta-Binomial Model",fill=TRUE)
-  if (model=="Independent") cat("Model: Independent Beta-Binomial Model",fill=TRUE)
+  if(verbose==TRUE) {
+    if (model=="Sarmanov") cat("Model: Sarmanov Beta-Binomial Model",fill=TRUE)
+    if (model=="Independent") cat("Model: Independent Beta-Binomial Model",fill=TRUE)
    
-  cat("Overall",measurename,fill=TRUE)
-  cat("Estimate:", round(overall$overall,3),fill=TRUE)
-  cat(siglevel," CI:[",round(overall$CI[1],3),",", round(overall$CI[2],3),"]", sep="",fill=TRUE)
-  cat("",fill=TRUE)
-  cat("Maximum likelihood estimates of hyperparameters:",fill=TRUE)
-
+    cat("Overall",measurename,fill=TRUE)
+    cat("Estimate:", round(overall$overall,3),fill=TRUE)
+    cat(siglevel," CI:[",round(overall$CI[1],3),",", round(overall$CI[2],3),"]", sep="",fill=TRUE)
+    cat("",fill=TRUE)
+    cat("Maximum likelihood estimates of hyperparameters:",fill=TRUE)
+  }
+  
   if (model=="Sarmanov"|model=="Independent") {
     chi2 <- object$chi2
     p.value <- object$pvalue
     a1 <- object$MLE[1]; b1 <- object$MLE[2]
     a2 <- object$MLE[3]; b2 <- object$MLE[4]
     rho <- object$MLE[5]
-
+    if(verbose==TRUE) {
     cat("a1 =",round(a1,3),", ","b1 =",round(b1,3),", ","a2 =",round(a2,3),
         ", ","b2 =",round(b2,3),", ","rho =",round(rho,3),sep="",fill=TRUE)
     cat("Likelihood ratio test for within-group correlation (H0: rho=0):",sep="",fill=TRUE)
     cat("chi2: ",round(chi2,3),"; ","p-value: ",round(p.value,3),sep="",fill=TRUE)
-
+    }
+    
     out <- list(model=model,measure=measure,cov.matrix=cov.matrix,hessian=object$hessian,
                 overall=overall,studynames=studynames,chi2=chi2,pvalue=p.value,
                 alpha=alpha,MLE=object$MLE,studyspecific=specific)
   }
+  if(verbose==TRUE) {
   cat("Study-Specifc",measurename,":",sep="",fill=TRUE)
   print(round(specific[[1]],3))
   cat("\n")  
   invisible(out)
+  }
 }
 
 ######################################################################################
@@ -77,7 +81,7 @@ summary.multipletables <- function(object,...) {
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ######################################################################################
-summary_single_sampling <- function(object) {
+summary_single_sampling <- function(object,verbose) {
   alpha <- object$alpha
   measurename <- object$measurename
   model <- object$model
@@ -85,7 +89,8 @@ summary_single_sampling <- function(object) {
   siglevel <- paste(as.character((1-alpha)*100),"%",sep="")
   measure<-object$measure
   studynames<-object$studynames
-  
+ 
+  if (verbose==TRUE) { 
   cat("Measure:",measurename,fill=TRUE)
   if (model=="Sarmanov") {
     cat("Model: Sarmanov Beta-Binomial Model",fill=TRUE)
@@ -93,7 +98,7 @@ summary_single_sampling <- function(object) {
   }
   if (model=="Independent")  cat("Model: Independent Beta-Binomial Model",fill=TRUE)
   cat("\n",fill=TRUE)
-     
+  }   
   result <- list()
 
   result[[1]] <- c(mean(object$sample[[1]]),median(object$sample[[1]]),
@@ -105,12 +110,14 @@ summary_single_sampling <- function(object) {
                           paste(siglevel,"HDR CI right"))
 
   ## print the object
+  if (verbose==TRUE) {
   cat("Mean:",round(result[[1]][1],3),fill=TRUE)
   cat("Median:",round(result[[1]][2],3),fill=TRUE)
   cat(siglevel," ET CI: [",round(result[[1]][3],3),"," ,round(result[[1]][4],3),"]",sep="", fill=TRUE)
   cat(siglevel," HDR CI: [",round(result[[1]][5],3),"," ,round(result[[1]][6],3),"]",sep="", fill=TRUE)
   cat("\n")
   invisible(result)
+}
 }
 
 ######################################################################################

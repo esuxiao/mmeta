@@ -6,7 +6,7 @@
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ##############################################################################################
-plot.singletable <- function(x,type=type,file=NULL,select=c(1,2),
+plot.singletable <- function(x,type=type,select=c(1,2),
                              xlab=NULL,ylab=NULL,addline=NULL,xlim=NULL,
                              ylim=NULL,...) {
   if (!inherits(x, "singletable"))
@@ -19,12 +19,10 @@ plot.singletable <- function(x,type=type,file=NULL,select=c(1,2),
     stop("only 2 kinds of plots are available:sidebyside/overlap")
      
   if(type=="sidebyside")
-    sideplot_single(x,file=file,
-                    select=select,xlab=xlab,ylab=ylab,xlim=xlim,
+    sideplot_single(x,select=select,xlab=xlab,ylab=ylab,xlim=xlim,
                     ylim=ylim,addline=addline,...)
   if(type=="overlap")
-    overlapplot_single(x,
-                       file=file,select=select,xlab=xlab,ylab=ylab,xlim=xlim,
+    overlapplot_single(x,select=select,xlab=xlab,ylab=ylab,xlim=xlim,
                        ylim=ylim,addline=addline,...)
 }
 
@@ -36,9 +34,11 @@ plot.singletable <- function(x,type=type,file=NULL,select=c(1,2),
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ################################################################################################
-sideplot_single <- function(object,file=NULL,
-                            select=c(1,2),xlab=NULL,ylab=NULL,xlim=NULL,
+sideplot_single <- function(object,select=c(1,2),xlab=NULL,ylab=NULL,xlim=NULL,
                             ylim=NULL,addline=NULL,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   alpha <- object$alpha
   measure <- object$measure
   nselect <- length(select)
@@ -55,16 +55,6 @@ sideplot_single <- function(object,file=NULL,
 
   if (is.null(ylab)) ylab <- "Density"
 
-  if(!is.null(file)) {
-    origen.path <- getwd()
-    savepath <- file.path(getwd(),"mmeta")
-    dir.create(savepath,showWarnings = FALSE)
-    filename <- paste(file,".pdf",sep="")
-    setwd(savepath)
-    pdf(filename)
-    setwd(origen.path)
-  }
- # if(is.null(file)) { dev.new() }
   par(mfrow=c(1,j))
 
   for (i in 1:length(select)) {
@@ -88,10 +78,6 @@ sideplot_single <- function(object,file=NULL,
     }
     legend("topright", studynames.select[i], lty=1, lwd=2,bty = "n")
   }
-  if(!is.null(file)) {
-    dev.off()
-    cat(file," have been saved in:", savepath, fill=TRUE)
-  }
 }                                                                      
  
 ################################################################################################
@@ -102,8 +88,7 @@ sideplot_single <- function(object,file=NULL,
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ################################################################################################
-overlapplot_single <- function(object,select=c(1,2),
-                               file=NULL,xlab=NULL,ylab=NULL,xlim=NULL,
+overlapplot_single <- function(object,select=c(1,2),xlab=NULL,ylab=NULL,xlim=NULL,
                                ylim=NULL,addline=NULL,...) {
   alpha <- object$alpha
   measure <- object$measure
@@ -147,16 +132,6 @@ overlapplot_single <- function(object,select=c(1,2),
     ymin <- ylim[1]
   }
 
-  if(!is.null(file)) {
-    origen.path <- getwd()
-    savepath <- file.path(getwd(),"mmeta")
-    dir.create(savepath,showWarnings = FALSE)
-    filename <- paste(file,".pdf",sep="")
-    setwd(savepath)
-    pdf(filename)
-    setwd(origen.path)
-  }
-  #if(is.null(file)) { dev.new() }
   plot(density.select[[1]]$x, density.select[[1]]$y, type="l", lwd=2, axes = TRUE,
        ylim=c(ymin,ymax), xlim=c(xmin,xmax),ylab=ylab, xlab=xlab,...)
   for(i in 1:2) {
@@ -167,8 +142,4 @@ overlapplot_single <- function(object,select=c(1,2),
     }
   }
   legend("topright",  studynames.select, lty=1:2, lwd=rep(3,4),bty = "n")
-  if(!is.null(file)) {
-    dev.off()
-    cat(file, "have been saved in:", savepath,fill=TRUE)
-  }
 }

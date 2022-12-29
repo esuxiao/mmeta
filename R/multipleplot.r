@@ -7,7 +7,7 @@
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ######################################################################################
-plot.multipletables <- function(x,type=NULL,select=NULL,file=NULL, xlim=NULL,ylim=NULL,
+plot.multipletables <- function(x,type=NULL,select=NULL,xlim=NULL,ylim=NULL,
                                 xlabel=NULL,mar=NULL,xlog=TRUE,
                                 addline=NULL,xlab=NULL,ylab=NULL,ciShow=TRUE,...) {
   if (!inherits(x, "multipletables"))
@@ -31,15 +31,14 @@ plot.multipletables <- function(x,type=NULL,select=NULL,file=NULL, xlim=NULL,yli
 
   if(type=="sidebyside")
     sideplot_multiple(x,select=select,xlab=xlab,ylab=ylab,xlim=xlim,ylim=ylim,
-                      xlabel=xlabel,addline=addline,file=file,mar=mar,...)
+                      xlabel=xlabel,addline=addline,mar=mar,...)
   if(type=="overlap")
-    overlapplot_multiple(x,file=file,
-                         xlab=xlab,ylab=ylab,xlim=xlim,ylim=ylim,xlabel=xlabel,
+    overlapplot_multiple(x,xlab=xlab,ylab=ylab,xlim=xlim,ylim=ylim,xlabel=xlabel,
                          addline=addline,select=select, mar=mar,...) 
 
   if(type=="forest") {
     forestplot(x,select=select,xlab=xlab,ylab=ylab,
-               xlabel=xlabel,xlim=xlim,file=file,xlog=xlog,mar=mar,
+               xlabel=xlabel,xlim=xlim,xlog=xlog,mar=mar,
                addline=addline,ciShow=ciShow,...)
   }
 }
@@ -53,13 +52,16 @@ plot.multipletables <- function(x,type=NULL,select=NULL,file=NULL, xlim=NULL,yli
 ### Data:    7/13/2012
 #########################################################################################
 forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
-                       xlabel=xlabel,xlim=NULL,file=NULL,xlog=TRUE,mar=mar,
+                       xlabel=xlabel,xlim=NULL,xlog=TRUE,mar=mar,
                        addline=NULL,ciShow=ciShow,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   ##Quanlity control 
   measure<-object$measure
   report<-study_specifc(object)
       
-  if (measure=="RD") {xlog<-FALSE; print("xlog is unavailable for RD")}
+  if (measure=="RD") {xlog<-FALSE; message("xlog is unavailable for RD")}
   j <- 1
   if(is.null(select)) select <- seq(1:(nrow(report[[j]])))
   nselect <- length(select)
@@ -102,16 +104,7 @@ forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
       mylabs <- round(c(xmin,xmin+grid,xmin+2*grid, xmin+3*grid,xmin+4*grid,xmax),2)
     }  else mylabs <- log10(xlabel)
   }
-  
-  if (!is.null(file)) {
-    origen.path <- getwd()
-    savepath <- file.path(getwd(),"mmeta")
-    dir.create(savepath,showWarnings = FALSE)
-    setwd(savepath)
-    pdf(paste(file,".pdf",sep=""))
-    setwd(origen.path)
-  }
- # if(is.null(file)) { dev.new() }
+
   if(!is.null(mar)) par(mar=mar) else par(mar=c(4, 5, 3, 6))
   plot(0,0,type="n", xlab=xlab, ylab=ylab, yaxt="n", xaxt="n", xaxs="i",
        yaxs="r",ylim=c(0,nselect+1), xlim=c(xmin,xmax),...)
@@ -141,11 +134,6 @@ forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
     if(xlog==FALSE)
       if(!(addline%in%mylabs)) axis(side=1, at=addline,labels=addline)
   }
-
-  if (!is.null(file)) {
-    dev.off()
-    cat( file, ".pdf have been saved in:", savepath, fill=TRUE)
-  }
 }
  
 #############################################################################################
@@ -157,8 +145,11 @@ forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
 ### Data:    7/13/2012
 #############################################################################################  
 sideplot_multiple <- function(object,select=NULL,
-                              xlab=NULL,ylab=NULL,xlim=NULL,ylim=NULL,file=NULL,
+                              xlab=NULL,ylab=NULL,xlim=NULL,ylim=NULL,
                               xlabel=NULL,mar=mar,addline=NULL,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   measure <- object$measure
   if(is.null(select)) select <- seq(1:length(object$sample))
   alpha <- object$alpha
@@ -179,15 +170,7 @@ sideplot_multiple <- function(object,select=NULL,
   if (n.select<3) rownumber<-1 else rownumber <- 2
   if (n.select>1) colnumber<- 2  else colnumber <- 1
   for (j in 1:k) {
-    if (!is.null(file)) {
-      origen.path <- getwd()
-      savepath <- file.path(getwd(),"mmeta")
-      dir.create(savepath,showWarnings = FALSE)
-      filename <- paste(file,j,".pdf",sep="")
-      setwd(savepath)
-      pdf(filename)
-      setwd(origen.path)
-    }  else  { dev.new() }
+#    dev.new() 
     par(mfrow=c(rownumber,colnumber))
     if(!is.null(mar)) par(mar=mar) else par(mar=c(4, 3, 2, 1))
 
@@ -220,10 +203,7 @@ sideplot_multiple <- function(object,select=NULL,
       }
       legend("topright", c(studynames.select[i],"Prior"), lty=c(1,3), lwd=2, bty="n")
     }
-    if (!is.null(file)){
-      dev.off()
-      cat( filename,"have been saved in:", savepath, fill=TRUE)
-    }
+
   }
 }      
 
@@ -236,9 +216,12 @@ sideplot_multiple <- function(object,select=NULL,
 ### Author:  Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
 ### Data:    7/13/2012
 ############################################################################################## 
-overlapplot_multiple <- function(object,file=NULL,
+overlapplot_multiple <- function(object,
                                  xlab=NULL,ylab=NULL,select=NULL,xlim=NULL,ylim=NULL,
                                  xlabel=xlabel, addline=NULL, mar=mar,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   measure <- object$measure
   if(is.null(select)) select <- seq(1:length(object$sample))
   
@@ -246,7 +229,7 @@ overlapplot_multiple <- function(object,file=NULL,
   studynames.select <- object$studyname[select]
   density.select <- sample.select <- list()
   n.select <- length(select)
-  if(n.select<2) cat("select should be greater than 2","\n")
+  if(n.select<2) stop("select should be greater than 2")
 
   sample.select <- object$sample[select]
   density.select <- object$density[select]
@@ -278,15 +261,6 @@ overlapplot_multiple <- function(object,file=NULL,
     ymin<-ylim[1]; ymax<-ylim[2]
   }
 
-  if (!is.null(file))  {
-    origen.path <- getwd()
-    savepath <- file.path(getwd(),"mmeta")
-    dir.create(savepath,showWarnings = FALSE)
-    setwd(savepath)
-    pdf(paste(file,".pdf",sep=""))
-    setwd(origen.path)
-  }
- # if(is.null(file)) { dev.new() }
    if(!is.null(mar)) par(mar=mar) else par(mar=c(4, 3, 3, 3))
   if(!is.null(xlabel)){
     plot(density.select[[1]]$x,density.select[[1]]$y, type="l",
@@ -306,10 +280,6 @@ overlapplot_multiple <- function(object,file=NULL,
     points(density.select[[i]]$x, density.select[[i]]$y, type='l', lty=i, lwd=2,...)
   legend("topright", studynames.select, lty=1:n.select, lwd=rep(3,4),bty = "n")
 
-  if (!is.null(file)) {
-    dev.off()
-    cat( file,".pdf have been saved in:", savepath,fill=TRUE)
-  }
 }
 
                                                                                                                                                                                      

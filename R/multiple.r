@@ -55,8 +55,8 @@ multipletables <- function(data=NULL, measure=NULL, model="Sarmanov",
   }
 
   if (measure=="RD" & method=="exact"){
-    cat("Only sampling based method available for RD \n")
-    method <- "sampling"
+    stop("Only sampling based method available for RD \n")
+##    method <- "sampling"
   }
 
   out <- multipletables_sar(y1=y1,n1=n1,y2=y2,n2=n2,studynames=studynames,measure=measure,
