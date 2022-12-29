@@ -54,6 +54,9 @@ plot.multipletables <- function(x,type=NULL,select=NULL,xlim=NULL,ylim=NULL,
 forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
                        xlabel=xlabel,xlim=NULL,xlog=TRUE,mar=mar,
                        addline=NULL,ciShow=ciShow,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   ##Quanlity control 
   measure<-object$measure
   report<-study_specifc(object)
@@ -144,6 +147,9 @@ forestplot <- function(object,select=NULL,xlab=NULL,ylab=NULL,
 sideplot_multiple <- function(object,select=NULL,
                               xlab=NULL,ylab=NULL,xlim=NULL,ylim=NULL,
                               xlabel=NULL,mar=mar,addline=NULL,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   measure <- object$measure
   if(is.null(select)) select <- seq(1:length(object$sample))
   alpha <- object$alpha
@@ -213,6 +219,9 @@ sideplot_multiple <- function(object,select=NULL,
 overlapplot_multiple <- function(object,
                                  xlab=NULL,ylab=NULL,select=NULL,xlim=NULL,ylim=NULL,
                                  xlabel=xlabel, addline=NULL, mar=mar,...) {
+  oldpar <- par(no.readonly = TRUE) # store the default parameters.
+  on.exit(par(oldpar)) # restore the default parameters on exit.
+  
   measure <- object$measure
   if(is.null(select)) select <- seq(1:length(object$sample))
   
