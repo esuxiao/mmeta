@@ -5,11 +5,12 @@
     Summary a model of class \code{multipletables} fitted by \code{multipletables}.
 }
 \usage{
-      \method{summary}{multipletables}(object,...) 
+      \method{summary}{multipletables}(object,verbose=TRUE,...) 
 }
 
 \arguments{
   \item{object}{an object inheriting from class \code{multipletables}.}
+  \item{verbose}{a logical value; if TRUE(default), the detailed summary messages will display.}
   \item{...}{ additional arguments; currently none is used.}
 }
 
@@ -40,27 +41,33 @@
 
 \references{
 
-Luo, S., Chen, Y., Su, X., Chu, H., (2014). mmeta: An R Package for
-Multivariate Meta-Analysis. Journal of Statistical Software, 56(11), 1-26. 
+Luo, S., Chen, Y., Su, X., Chu, H., (2014). mmeta: An R Package for 
+Multivariate Meta-Analysis. \cr
+\emph{Journal of Statistical Software}, 56(11), 1-26. \cr 
+<https://dukespace.lib.duke.edu/dspace/bitstream/handle/10161/15522/2014Luo_Chen_Su_Chu_JSS_mmeta.pdf?sequence=1> \cr
 
 Chen, Y., Luo, S., (2011a). A Few Remarks on "Statistical Distribution of the Difference of
-Two Proportions' by Nadarajah and Kotz, Statistics in Medicine 2007; 26(18):3518-3523" .
-Statistics in Medicine, 30(15), 1913-1915. 
+Two Proportions' by Nadarajah and Kotz, Statistics in Medicine 2007; 26(18):3518-3523". \cr
+\emph{Statistics in Medicine, 30(15)}, 1913-1915. \cr
+<doi:10.1002/sim.4248> \cr
 
 Chen, Y., Chu, H., Luo, S., Nie, L., and Chen, S. (2014a). Bayesian
 analysis on meta-analysis of case-control studies accounting for
-within-study correlation. Statistical Methods in Medical Research,
-doi: 10.1177/0962280211430889. In press. 
-
+within-study correlation. \cr
+\emph{Statistical Methods in Medical Research}, 4.6 (2015): 836-855. \cr
+<https://doi.org/10.1177/0962280211430889>. \cr
 
 Chen, Y., Luo, S., Chu, H., Su, X., and Nie, L. (2014b). An empirical
 Bayes method for multivariate meta-analysis with an application in
-clinical trials. Communication in Statistics: Theory and Methods. In press. 
+clinical trials. \cr
+\emph{Communication in Statistics: Theory and Methods}, 43.16 (2014): 3536-3551. \cr
+<https://doi.org/10.1080/03610926.2012.700379>. \cr
 
 Chen, Y., Luo, S., Chu, H., Wei, P. (2013). Bayesian inference on risk
 differences: an application to multivariate meta-analysis of adverse
-events in clinical trials. Statistics in Biopharmaceutical Research, 5(2), 142-155.
-
+events in clinical trials. \cr
+\emph{Statistics in Biopharmaceutical Research}, 5(2), 142-155. \cr
+<https://doi.org/10.1080/19466315.2013.791483>. \cr 
 
 }
 
@@ -72,40 +79,40 @@ events in clinical trials. Statistics in Biopharmaceutical Research, 5(2), 142-1
 
 
 \examples{
-#library(mmeta)
+\donttest{
+library(mmeta)
 
 # Analyze the dataset colorectal to conduct exact inference of the odds ratios
-#data(colorectal)
-#multiple.OR <- multipletables(data=colorectal, measure="OR", model="Sarmanov", method="exact")
+data(colorectal)
+multiple.OR <- multipletables(data=colorectal, measure="OR", model="Sarmanov", method="exact")
 # Generate the forest plot with 95\% CIs of study-specific odds ratios
-#and 95\% CI of overall odds ratio
-#plot(multiple.OR, type="forest", addline=1)
-# Plot the posterior density functions of some target studies in an overlaying manner
-#plot(multiple.OR, type="overlap", select=c(4,14,16,20))
-# Plot the posterior density functions of some target studies in a
-#side-by-side manner 
-#plot(multiple.OR, type="sidebyside", select=c(4,14,16,20), ylim=c(0,2.7), xlim=c(0.5,1.5))
-
+# and 95\% CI of overall odds ratio
+plot(multiple.OR, type="forest", addline=1)
+# Plot the posterior density functions of some target studies
+# in an overlaying manner
+plot(multiple.OR, type="overlap", select=c(4,14,16,20))
+# Plot the posterior density functions of some target studies 
+# in a side-by-side manner 
+plot(multiple.OR, type="sidebyside", select=c(4,14,16,20), ylim=c(0,2.7), xlim=c(0.5,1.5))
 
 # Analyze the dataset withdrawal to conduct inference of the relative risks
-#data(withdrawal)
-#multiple.RR <- multipletables(data=withdrawal, measure="RR",model="Sarmanov")
-#plot(multiple.RR, type="forest", addline=1)
-#plot(multiple.RR, type="overlap", select=c(3,8,14,16))
-#plot(multiple.RR, type="sidebyside", select=c(3,8,14,16), ylim=c(0,1.2),
-#xlim=c(0.4,3))
+data(withdrawal)
+multiple.RR <- multipletables(data=withdrawal, measure="RR",model="Sarmanov")
+plot(multiple.RR, type="forest", addline=1)
+plot(multiple.RR, type="overlap", select=c(3,8,14,16))
+plot(multiple.RR, type="sidebyside", select=c(3,8,14,16), ylim=c(0,1.2),xlim=c(0.4,3))
 
 # Analyze the dataset withdrawal to conduct inference of the risk differences
-#data(withdrawal)
-#multiple.RD <- multipletables(data=withdrawal, measure="RD",
-#                              model="Sarmanov")
-#summary(multiple.RD)
-#plot(multiple.RD, type="forest", addline=0)
-#plot(multiple.RD, type="overlap", select=c(3,8,14,16))
-#plot(multiple.RD, type="sidebyside", select=c(3,8,14,16))
-#plot(multiple.RD, type="sidebyside", select=c(3,8,14,16),
-#     ylim=c(0,6), xlim=c(-0.2,0.4))
+data(withdrawal)
+multiple.RD <- multipletables(data=withdrawal, measure="RD",
+                              model="Sarmanov")
+summary(multiple.RD)
+plot(multiple.RD, type="forest", addline=0)
+plot(multiple.RD, type="overlap", select=c(3,8,14,16))
+plot(multiple.RD, type="sidebyside", select=c(3,8,14,16))
+plot(multiple.RD, type="sidebyside", select=c(3,8,14,16),
+     ylim=c(0,6), xlim=c(-0.2,0.4))
 }
-
+}
 
 \keyword{methods}
