@@ -1,10 +1,10 @@
 Package: mmeta
 Type: Package
 Title: Multivariate Meta-Analysis
-Version: 2.3
-Date: 2017-3-26
+Version: 2.4
+Date: 2022-11-04
 Author: Sheng Luo, Yong Chen, Xiao Su, Haitao Chu
-Maintainer: Xiao Su <esuxiao@gmail.com>
+Maintainer: Jiajie Chen <jiajie.chen@pennmedicine.upenn.edu>
 Description: A novel multivariate meta-analysis.
 Depends: R (>= 2.10.0)
 Imports: aod
