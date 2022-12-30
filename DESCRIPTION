@@ -22,7 +22,6 @@ NeedsCompilation: yes
 Repository: CRAN
 Date/Publication: 2017-03-28 06:00:09 UTC
 Suggests: 
-    spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
