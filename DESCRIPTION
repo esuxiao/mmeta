@@ -1,8 +1,8 @@
 Package: mmeta
 Type: Package
 Title: Multivariate Meta-Analysis
-Version: 2.4
-Date: 2022-12-12
+Version: 3.0
+Date: 2022-12-29
 Authors@R: c(person("Sheng", "Luo", role="aut"), 
             person("Yong", "Chen", role ="aut", email = "ychen123@pennmedicine.upenn.edu" ), 
             person("Xiao", "Su", role = "aut"), 
