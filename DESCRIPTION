@@ -25,3 +25,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
+Encoding: UTF-8
+RoxygenNote: 7.2.2
