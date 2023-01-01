@@ -33,7 +33,7 @@ independent beta-binomial model. \code{Sarmanov}is Sarmanov beta-binomial model.
  ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 }
 \value{
-single_table_object
+a list of components and prior parameters of a single 2 by 2 table.
 }
 \description{
 Create a components list of exact posterior inference based on a single 2 by 2 table.
@@ -63,10 +63,12 @@ difference of event comparing case group with control group.
 When model='\code{Sarmanov}', \code{rho} is subject to constraints. See Chen et al(2011) for details.
 }
 \examples{
-## specify data (y1, n1, y2, n2), parameters (a1, b1, a2, b2, rho), model (Sarmanov/Independent),
+## Specify data (y1, n1, y2, n2), parameters (a1, b1, a2, b2, rho), model (Sarmanov/Independent),
 ## and Specify measure(OR/RR/RD)
- \donttest{single_table_obj_exact <- SingleTable.create(a1=0.5, b1=0.5, 
- a2=0.5, b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")}
+## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
+ \donttest{library(mmeta)
+ single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5, 
+ a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")}
 }
 \references{
 Chen, Y., Luo, S., (2011a). A Few Remarks on "Statistical Distribution of the Difference of
