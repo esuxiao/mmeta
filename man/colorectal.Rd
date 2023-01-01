@@ -45,14 +45,6 @@ The dataset \code{colorectal} is used to conduct exact posterior
 inference of odds ratio for multiple 2X2 tables. 
 }
 
-
-\seealso{
-  \code{\link{multipletables}},
-    \code{\link{summary.multipletables}},
-    \code{\link{plot.multipletables}},
- 
-}
-
 \examples{
 \donttest{
 library(mmeta)
