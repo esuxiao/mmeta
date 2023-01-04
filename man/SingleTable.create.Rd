@@ -33,7 +33,9 @@ independent beta-binomial model. \code{Sarmanov}is Sarmanov beta-binomial model.
  ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 }
 \value{
-a list of components and prior parameters of a single 2 by 2 table.
+An object is returned, inheriting from class \code{singletable}. 
+Objects of this class contain the meta-data for generic functions: \code{SingleTable.modelFit}, 
+\code{SingleTable.summary}, and \code{SingleTable.plot}.
 }
 \description{
 Create a components list of exact posterior inference based on a single 2 by 2 table.
@@ -67,7 +69,7 @@ When model='\code{Sarmanov}', \code{rho} is subject to constraints. See Chen et 
 ## and Specify measure(OR/RR/RD)
 ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
  \donttest{library(mmeta)
- single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5, 
+ single_table_obj <- SingleTable.create(a1=0.5,b1=0.5, 
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")}
 }
 \references{
