@@ -185,8 +185,31 @@ SingleTable.modelFit <- function(single_table_Obj,
 #' @param sing_table_obj The object created by \code{SingleTable.create} and fitted by \code{SingleTable.modelFit}.
 #' @param alpha a numeric value specifying the significant level. Default value sets to 0.05.
 #' @param verbose a logical value; if TRUE(default), the detailed summary messages will display.
-#' @param digit an integer value specifying how many decimal places to keep.
+#' @param digit an integer value specifying how many decimal places to keep. Default value sets to 3.
 #' @param control a list can be specified to control the fitting process.
+#' @returns  A list with the following components: posterior mean, posterior median, equal tail CI, and HDR CI.
+#' @examples 
+#' ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
+#'  \donttest{
+#'  library(mmeta)
+#'  library(ggplot2)
+#'  ## If exact method is used, the codes for sampling method are similar.
+#'  ## Create object \code{single_table_obj_exact}
+#'  single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5, 
+#'  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")
+#'  ## model fit
+#'  single_table_obj_exact <- SingleTable.modelFit(single_table_obj_exact, method = 'exact')
+#'  ## Summary of the fitting process
+#'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.05)
+#'  ## Structure of SingleTable object
+#'  str(single_table_obj_exact)
+#'  ## If set alpha level to 0.1
+#'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.1)
+#'  ## If set digit to 2
+#'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, digit  = 2)
+#'  ## If decided not to print output
+#'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, verbose = FALSE)
+#'  }
 #' @export
 SingleTable.summary <- function(single_table_Obj,
                                 alpha = 0.05, 
