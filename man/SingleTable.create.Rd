@@ -33,9 +33,14 @@ independent beta-binomial model. \code{Sarmanov}is Sarmanov beta-binomial model.
  ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 }
 \value{
-An object is returned, inheriting from class \code{singletable}. 
-Objects of this class contain the meta-data for generic functions: \code{SingleTable.modelFit}, 
-\code{SingleTable.summary}, and \code{SingleTable.plot}.
+An object is returned, inheriting from class \code{singletable}.
+The Objects of this class contain the meta-data for generic functions: \code{SingleTable.modelFit},
+\code{SingleTable.summary}, and \code{SingleTable.plot}. The following values
+of the object must be non-null under \code{SingleTable.create}:
+\item{measure}{the value of \code{measure} argument.}
+\item{model}{the value of \code{model} argument.}
+\item{data}{a numeric vector of input data with components: \code{y1}, \code{n1}, \code{y2}, \code{n2}}  
+\item{parameter}{a numeric vector of the hyperparameters: \code{a1}, \code{b1}, \code{a2}, \code{b2}, and \code{rho}.}
 }
 \description{
 Create a components list of exact posterior inference based on a single 2 by 2 table.
@@ -44,8 +49,8 @@ Create a components list of exact posterior inference based on a single 2 by 2 t
 There are two kinds of study design, i.e., prospective study or
 clinical trial, and retrospective or case-control study. 
 In a prospective study or clinical trial, \code{data} is a data
-frame that contains \code{y1}, \code{n1}, \code{y2}, \code{n2},
-\code{studynames}. \code{y1} is the number of subjects
+frame that contains \code{y1}, \code{n1}, \code{y2}, \code{n2}.
+\code{y1} is the number of subjects
 experienced a certain event in the unexposed group. \code{n1} is the number
 of subjects in the unexposed group. \code{y2} is the number of subjects experienced
 a certain event in the exposed group. \code{n2} is the number of
@@ -68,7 +73,10 @@ When model='\code{Sarmanov}', \code{rho} is subject to constraints. See Chen et 
 ## Specify data (y1, n1, y2, n2), parameters (a1, b1, a2, b2, rho), model (Sarmanov/Independent),
 ## and Specify measure(OR/RR/RD)
 ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
- \donttest{library(mmeta)
+## Create object \code{single_table_obj}
+ \donttest{
+ library(mmeta)
+ library(ggplot2)
  single_table_obj <- SingleTable.create(a1=0.5,b1=0.5, 
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")}
 }
