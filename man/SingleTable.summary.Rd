@@ -2,7 +2,7 @@
 % Please edit documentation in R/SingleTable-methods-exported.R
 \name{SingleTable.summary}
 \alias{SingleTable.summary}
-\title{Summarize the objects \code{singletable}}
+\title{Summarize the object of class \code{singletable}.}
 \usage{
 SingleTable.summary(
   single_table_Obj,
@@ -27,7 +27,7 @@ SingleTable.summary(
 A list with the following components: posterior mean, posterior median, equal tail CI, and HDR CI.
 }
 \description{
-Summarize a model of class \code{singletable} fitted by \code{SingleTable.modelFit}.
+Summarize model of the single table analysis fitted by \code{SingleTable.modelFit}.
 }
 \examples{
 ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
@@ -40,7 +40,7 @@ Summarize a model of class \code{singletable} fitted by \code{SingleTable.modelF
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")
  ## model fit
  single_table_obj_exact <- SingleTable.modelFit(single_table_obj_exact, method = 'exact')
- ## Summary of the fitting process
+ ## Summary of the fitting process (default)
  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.05)
  ## Structure of SingleTable object
  str(single_table_obj_exact)
