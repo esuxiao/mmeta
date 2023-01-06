@@ -26,7 +26,7 @@ reference line at \code{x=addline}. Default is NULL.}
 \item{sing_table_obj}{The object inheriting from class \code{singletable}.}
 }
 \value{
-No return value, called for side effects.
+A ggplot2 object is returned.
 }
 \description{
 Produces various plots for single table analysis.

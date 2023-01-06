@@ -261,7 +261,7 @@ SingleTable.summary <- function(single_table_Obj,
 #' and the prior distribution are drawn side by side in two plots. If
 #' \code{type="overlap"}, the posterior distribution of measure and
 #' the prior distribution are overlaid in one plot. 
-#' @returns No return value, called for side effects.
+#' @returns A ggplot2 object is returned.
 #' @examples 
 #' ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
 #'  \donttest{
