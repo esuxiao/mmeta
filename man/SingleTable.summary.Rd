@@ -24,7 +24,7 @@ SingleTable.summary(
 \item{sing_table_obj}{The object created by \code{SingleTable.create} and fitted by \code{SingleTable.modelFit}.}
 }
 \value{
-A list with the following components: posterior mean, posterior median, equal tail CI, and HDR CI.
+A list with the following components: measure, model, posterior mean, posterior median, equal tail CI, and HDR CI.
 }
 \description{
 Summarize model of the single table analysis fitted by \code{SingleTable.modelFit}.
@@ -48,7 +48,7 @@ Summarize model of the single table analysis fitted by \code{SingleTable.modelFi
  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.1)
  ## If set digit to 2
  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, digit  = 2)
- ## If decided not to print output
+ ## If decided not to print out
  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, verbose = FALSE)
  }
 }

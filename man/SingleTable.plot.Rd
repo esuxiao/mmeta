@@ -14,7 +14,7 @@ SingleTable.plot(
 }
 \arguments{
 \item{type}{a character string specifying the type of plots to 
-produce. Options are \code{sidebyside}(default) and \code{overlap}.}
+produce. Options are \code{sidebyside}(default) and \code{overlay}.}
 
 \item{xlim}{a numeric value specifying the lower and upper limits of the x-axis. Default is NULL.}
 
@@ -34,7 +34,7 @@ Produces various plots for single table analysis.
 \details{
 If \code{type="sidebyside"}, the posterior distribution of measure
 and the prior distribution are drawn side by side in two plots. If
-\code{type="overlap"}, the posterior distribution of measure and
+\code{type="overlay"}, the posterior distribution of measure and
 the prior distribution are overlaid in one plot.
 }
 \examples{

@@ -2,7 +2,9 @@
 
 
 #' @useDynLib mmeta
-#' @title Create a components list of exact posterior inference based on a single 2 by 2 table.
+#' @title Create an object of class \code{singletable}.
+#' @description Create an object of class \code{MultipleTables}, which is 
+#' a components list of exact posterior inference based on single 2x2 table.
 #' @usage SingleTable.create(a1,b1,a2,b2,rho,y1,n1,y2,n2,model,measure)
 #' @param a1 a numeric value specifying the first hyperparameter of the beta prior for group 1.
 #' @param b1 a numeric value specifying the second hyperparameter of the beta prior for group 1.
@@ -101,7 +103,7 @@ SingleTable.create <- function(a1 = NULL, b1= NULL,
 
 #' @useDynLib mmeta
 #' @title Exact posterior inference based on a single 2x2 table
-#' @description This function conducts exact posterior inference based on the opject created by \code{SingleTable.create}.
+#' @description This function conducts exact posterior inference based on the object created by \code{SingleTable.create}.
 #' @param sing_table_obj The object created by \code{SingleTable.create}.
 #' @param method a character string specifying the method. Options are \code{exact} 
 #' and \code{sampling}. \code{exact} (default) is a method based on Monte Carlo sampling. \code{exact} is exact method.
@@ -187,7 +189,7 @@ SingleTable.modelFit <- function(single_table_Obj,
 #' @param verbose a logical value; if TRUE(default), the detailed summary messages will display.
 #' @param digit an integer value specifying how many decimal places to keep. Default value sets to 3.
 #' @param control a list can be specified to control the fitting process.
-#' @returns  A list with the following components: posterior mean, posterior median, equal tail CI, and HDR CI.
+#' @returns  A list with the following components: measure, model, posterior mean, posterior median, equal tail CI, and HDR CI.
 #' @examples 
 #' ## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
 #'  \donttest{
@@ -207,7 +209,7 @@ SingleTable.modelFit <- function(single_table_Obj,
 #'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.1)
 #'  ## If set digit to 2
 #'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, digit  = 2)
-#'  ## If decided not to print output
+#'  ## If decided not to print out
 #'  single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, verbose = FALSE)
 #'  }
 #' @export
@@ -252,14 +254,14 @@ SingleTable.summary <- function(single_table_Obj,
 #' @description Produces various plots for single table analysis.
 #' @param sing_table_obj The object inheriting from class \code{singletable}.
 #' @param type a character string specifying the type of plots to 
-#' produce. Options are \code{sidebyside}(default) and \code{overlap}.
+#' produce. Options are \code{sidebyside}(default) and \code{overlay}.
 #' @param xlim a numeric value specifying the lower and upper limits of the x-axis. Default is NULL.
 #' @param add_vertical a numeric value specifying the x-value for a vertical
 #' reference line at \code{x=addline}. Default is NULL.
 #' @param by a character string specifying the way to distinguish different plots. Options are \code{line_type}(default) and \code{color}.
 #' @details  If \code{type="sidebyside"}, the posterior distribution of measure
 #' and the prior distribution are drawn side by side in two plots. If
-#' \code{type="overlap"}, the posterior distribution of measure and
+#' \code{type="overlay"}, the posterior distribution of measure and
 #' the prior distribution are overlaid in one plot. 
 #' @returns A ggplot2 object is returned.
 #' @examples 

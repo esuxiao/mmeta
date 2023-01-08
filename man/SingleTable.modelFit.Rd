@@ -32,7 +32,7 @@ An object of \code{singletable} class is returned including the following non-nu
 \item{density}{a list of the density of the posterior and prior distributions.}
 }
 \description{
-This function conducts exact posterior inference based on the opject created by \code{SingleTable.create}.
+This function conducts exact posterior inference based on the object created by \code{SingleTable.create}.
 }
 \details{
 control list can be specified to control the fitting process: 

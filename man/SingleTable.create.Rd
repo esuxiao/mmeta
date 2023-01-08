@@ -2,7 +2,7 @@
 % Please edit documentation in R/SingleTable-methods-exported.R
 \name{SingleTable.create}
 \alias{SingleTable.create}
-\title{Create a components list of exact posterior inference based on a single 2 by 2 table.}
+\title{Create an object of class \code{singletable}.}
 \usage{
 SingleTable.create(a1,b1,a2,b2,rho,y1,n1,y2,n2,model,measure)
 }
@@ -43,7 +43,8 @@ of the object must be non-null under \code{SingleTable.create}:
 \item{parameter}{a numeric vector of the hyperparameters: \code{a1}, \code{b1}, \code{a2}, \code{b2}, and \code{rho}.}
 }
 \description{
-Create a components list of exact posterior inference based on a single 2 by 2 table.
+Create an object of class \code{MultipleTables}, which is 
+a components list of exact posterior inference based on single 2x2 table.
 }
 \details{
 There are two kinds of study design, i.e., prospective study or
