@@ -55,7 +55,7 @@ study-specific measure are displayed in one graph. To clarity, it
 is advisable to specify a few studies by \code{selected_study_names} argument. 
 
 If \code{type='forest')} and \code{layout_type='NULL'}, a forest plot of all study-specific and
-overall measure with 95% credible/confidence intervals are plotted.
+overall measure with 95\% credible/confidence intervals are plotted.
 }
 \examples{
  
