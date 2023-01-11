@@ -1,0 +1,11 @@
+colorectal	colorectal
+diabetes	diabetes
+MultipleTables.create	MultipleTables.create
+MultipleTables.modelFit	MultipleTables.modelFit
+MultipleTables.plot	MultipleTables.plot
+MultipleTables.summary	MultipleTables.summary
+SingleTable.create	SingleTable.create
+SingleTable.modelFit	SingleTable.modelFit
+SingleTable.plot	SingleTable.plot
+SingleTable.summary	SingleTable.summary
+withdrawal	withdrawal

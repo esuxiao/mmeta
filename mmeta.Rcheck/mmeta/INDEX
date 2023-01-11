@@ -1,0 +1,21 @@
+MultipleTables.create   Create an object of class 'MultipleTables'.
+MultipleTables.modelFit
+                        Exact posterior inference based on multiple 2x2
+                        tables.
+MultipleTables.plot     Plot Method for 'Multipletables' objects
+MultipleTables.summary
+                        Summarize the object of class 'MultipleTables'.
+SingleTable.create      Create an object of class 'singletable'.
+SingleTable.modelFit    Exact posterior inference based on a single 2x2
+                        table
+SingleTable.plot        Plot Method for 'singletable' objects.
+SingleTable.summary     Summarize the object of class 'singletable'.
+colorectal              Studies on the Association of
+                        N-acetyltransferase 2 (NAT2) Acetylation Status
+                        and Colorectal Cancer
+diabetes                Studies on the Association of Gestational
+                        Diabetes Mellitus (GDM) and Type 2 Diabetes
+                        Mellitus (T2DM)
+withdrawal              Studies on the association of withdrawal from
+                        study due to adverse events and tricyclic
+                        treatment
