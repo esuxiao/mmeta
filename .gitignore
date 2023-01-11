@@ -40,7 +40,9 @@ vignettes/*.pdf
 
 # Compiled .c or fortran object
 *.so 
+*.o
 *.dll
+
 
 # files generate by google drive
 *.ini
