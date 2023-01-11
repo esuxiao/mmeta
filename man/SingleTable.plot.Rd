@@ -13,7 +13,9 @@ SingleTable.plot(
 )
 }
 \arguments{
-\item{type}{a character string specifying the type of plots to 
+\item{single_table_Obj}{The object inheriting from class \code{singletable}.}
+
+\item{type}{a character string specifying the type of plots to
 produce. Options are \code{sidebyside}(default) and \code{overlay}.}
 
 \item{xlim}{a numeric value specifying the lower and upper limits of the x-axis. Default is NULL.}
@@ -22,8 +24,6 @@ produce. Options are \code{sidebyside}(default) and \code{overlay}.}
 reference line at \code{x=addline}. Default is NULL.}
 
 \item{by}{a character string specifying the way to distinguish different plots. Options are \code{line_type}(default) and \code{color}.}
-
-\item{sing_table_obj}{The object inheriting from class \code{singletable}.}
 }
 \value{
 A ggplot2 object is returned.
@@ -38,13 +38,13 @@ and the prior distribution are drawn side by side in two plots. If
 the prior distribution are overlaid in one plot.
 }
 \examples{
-## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
+## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5.
  \donttest{
  library(mmeta)
  library(ggplot2)
  ## If exact method is used, the codes for sampling method are similar.
  ## Create object \code{single_table_obj_exact}
- single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5, 
+ single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5,
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")
  ## model fit
  single_table_obj_exact <- SingleTable.modelFit(single_table_obj_exact, method = 'exact')
@@ -53,10 +53,12 @@ the prior distribution are overlaid in one plot.
  ## Plot the densities side-by-side
  SingleTable.plot(single_table_obj_exact, type = 'side_by_side')
  ## set xlim between 0 to 4 and add vertical line at x = 1
- SingleTable.plot(single_table_obj_exact, type = 'side_by_side',xlim = c(0,4), add_vertical = 1)
+ SingleTable.plot(single_table_obj_exact, type = 'side_by_side',
+ xlim = c(0,4), add_vertical = 1)
  ## override xlab and add title via ggplot2
- plot_obj <- SingleTable.plot(single_table_obj_exact, type = 'side_by_side',xlim = c(0,4), add_vertical = 1)
- plot_obj + xlab('Odds ratio') + ggtitle("Plot of density function") 
+ plot_obj <- SingleTable.plot(single_table_obj_exact, type = 'side_by_side',
+ xlim = c(0,4), add_vertical = 1)
+ plot_obj + xlab('Odds ratio') + ggtitle("Plot of density function")
  ## Overlay plot the density
  SingleTable.plot(single_table_obj_exact, type = 'overlay')
  ## Plot by color instead of line type

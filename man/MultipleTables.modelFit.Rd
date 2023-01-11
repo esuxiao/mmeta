@@ -14,7 +14,7 @@ MultipleTables.modelFit(
 \arguments{
 \item{multiple_tables_object}{The object created by \code{MultipleTables.create}.}
 
-\item{method}{a character string specifying the method. Options are \code{exact} 
+\item{method}{a character string specifying the method. Options are \code{exact}
 and \code{sampling}. \code{exact} (default) is a method based on Monte Carlo sampling. \code{exact} is exact method.}
 
 \item{verbose}{a logical value; if TRUE, the detailed summary messages are displayed, else FALSE (default) the messages are omitted.}
@@ -25,7 +25,7 @@ and \code{sampling}. \code{exact} (default) is a method based on Monte Carlo sam
 An object inheriting from class \code{MultipleTables} is returned. Objects of this class including the following non-null values:
 \item{measure}{the value of \code{measure} argument.}
 \item{model}{the value of \code{model} argument.}
-\item{data}{a data matrix with rows being \code{y1}, \code{n1}, \code{y2}, and \code{n2}.}  
+\item{data}{a data matrix with rows being \code{y1}, \code{n1}, \code{y2}, and \code{n2}.}
 \item{method}{the value of \code{method} argument.}
 \item{study_names}{a character string indicating all the study names.}
 \item{chi2_value}{the chi-square test statistics of the likelihood ratio test.}
@@ -33,8 +33,8 @@ An object inheriting from class \code{MultipleTables} is returned. Objects of th
 \item{prior_mle}{a numeric vector of the estimated hyperparameters in the
   following order: \code{a1}, \code{b1}, \code{a2}, \code{b2}, \code{rho}.}
 \item{cov_matrix_log}{the estimated covariance matrix of the estimated parameters in the transformed scales.}
-\item{hessian_log}{the estimated hessian matrix of the estimated parameters in the transformed scales.}	  
-\item{samples}{a list of samples for the posterior and prior distributions.}   
+\item{hessian_log}{the estimated hessian matrix of the estimated parameters in the transformed scales.}
+\item{samples}{a list of samples for the posterior and prior distributions.}
 \item{density}{a list of the density of the posterior and prior distributions.}
 These values are essential for generic functions: \code{MultipleTables.summary} and \code{MultipleTables.plot}.
 }
@@ -42,7 +42,7 @@ These values are essential for generic functions: \code{MultipleTables.summary} 
 This function conducts exact posterior inference based on the object created by \code{MultipleTables.create}.
 }
 \details{
-control list can be specified to control the fitting process: 
+control list can be specified to control the fitting process:
 \itemize{
 \item \code{n_samples}:  number of posterior samples; Defualt is 5000.
 \item \code{mcmc_initial}:  initial values for (p1, p2) in MCMC; Default is c(0.5, 0.5).
@@ -51,40 +51,10 @@ control list can be specified to control the fitting process:
 \item \code{num_grids}:  number of grids to calculate density; The defualt is 20498.
 \item \code{optim_method}: optimazation method. Default is “L-BFGS-B”. Please refer to ‘optim’ function.
 \item \code{maxit}: maximum number of iterations for iteration. Default is 1000. Please refer to ‘optim’ function.
-\item \code{initial_values}: initial value for optimization. 
+\item \code{initial_values}: initial value for optimization.
 The default approach is to fit beta-bin model to generate initial values via \code{aod} package.
 }
-}
-\examples{
-\donttest{
- library(mmeta)
- library(ggplot2)
- ## Analyze the dataset colorectal to conduct exact inference of the odds ratios
- data(colorectal)
- colorectal['study_name'] <- colorectal['studynames']
- # ########################## If exact method is used ############################
- ## Create object multiple_tables_obj_exact
- multiple_tables_obj_exact <- MultipleTables.create(data=colorectal, measure='OR', model= 'Sarmanov')
- ## Model fit default
- multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact')
- ## Options for Control; If set number of posterior samples is 5000
- multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
- control = list(n_samples = 3000))
- ## If set intial values correspoinding to c(a1, b1, a2, b2, rho) as c(1,1,1,1,0):
- multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
- control = list(initial_values = c(1,1,1,1,0)))
- ## If maximum number of iterations for iteration is 100
- multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
- control = list(maxit = 100))
- ## If maximum number of iterations for iteration is 100 and number of posterior samples as 3000
- multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
- control = list(maxit = 100, nsamples = 3000))
- # ########################## If sampling method is used ############################
- multiple_tables_obj_sampling <- MultipleTables.create(data=colorectal, measure='OR', model= 'Sarmanov')
- multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling')
- ## The options of \code{control} list specifying the fitting process are similar to the codes shown above.
-}
- @details 
+
  There are two kinds of study design, i.e., prospective study or
  clinical trial, and retrospective or case-control study. In a
  prospective study or clinical trial, \code{data} is a data frame that contains \code{y1}, \code{n1}, \code{y2}, \code{n2},
@@ -96,7 +66,7 @@ The default approach is to fit beta-bin model to generate initial values via \co
  of event comparing exposed group with unexposed group. \code{RR}
  is relative risk of event comparing exposed group with unexposed group. \code{RD} is risk
  difference of event comparing exposed group with unexposed group.
- 
+
  For case-control study, \code{y1} is the number of subjects with
  exposure in the control group. \code{n1} is the number of
  subjects in the control group. \code{y2} is the number of
@@ -105,7 +75,7 @@ The default approach is to fit beta-bin model to generate initial values via \co
  of event comparing case group with control group. \code{RR} is
  relative risk of event comparing case group with control group. \code{RD} is risk
  difference of event comparing case group with control group.
- 
+
  Empirical Bayes method is used to maximize the marginal likelihood
  combining all studies to obtained the estimates of the
  hyperparameters a1, b1, a2, b2, and rho. When
@@ -113,35 +83,69 @@ The default approach is to fit beta-bin model to generate initial values via \co
  of a1, b1, a2, and b2 are used. When \code{model="Sarmanov"},
  \code{rho} is subject to constraints. See Chen et al (2011) for
  details.
- 
+
  The output \code{cov.matrix} and \code{hessian} are the estimated
  covariance matrix and hessian matrix of the estimated
  parameters in the transformed scales. The estimated parameters
  are log(a1), log(b1), log(a2), log(b2), omega, where the
  correlation coefficient rho is a function of a1, b1, a2, b2, and
  omega. Please see details on page 7 of Chen et al (2012 b).
- @references Luo, S., Chen, Y., Su, X., Chu, H., (2014). mmeta: An R Package for 
+}
+\examples{
+\donttest{
+ library(mmeta)
+ library(ggplot2)
+ ## Analyze the dataset colorectal to conduct exact inference of the odds ratios
+ data(colorectal)
+ colorectal['study_name'] <- colorectal['studynames']
+ # ########################## If exact method is used ############################
+ ## Create object multiple_tables_obj_exact
+ multiple_tables_obj_exact <- MultipleTables.create(data=colorectal,
+ measure='OR', model= 'Sarmanov')
+ ## Model fit default
+ multiple_tables_obj_exact <- MultipleTables.modelFit(
+ multiple_tables_obj_exact, method = 'exact')
+ ## Options for Control; If set number of posterior samples is 5000
+ multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact',
+ control = list(n_samples = 3000))
+ ## If set intial values correspoinding to c(a1, b1, a2, b2, rho) as c(1,1,1,1,0):
+ multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact',
+ control = list(initial_values = c(1,1,1,1,0)))
+ ## If maximum number of iterations for iteration is 100
+ multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact',
+ control = list(maxit = 100))
+ ## If maximum number of iterations for iteration is 100 and number of posterior samples as 3000
+ multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact',
+ control = list(maxit = 100, nsamples = 3000))
+ # ########################## If sampling method is used ############################
+ multiple_tables_obj_sampling <- MultipleTables.create(data=colorectal,
+ measure='OR', model= 'Sarmanov')
+ multiple_tables_obj_sampling <- MultipleTables.modelFit(
+ multiple_tables_obj_sampling, method = 'sampling')
+ ## The options of \code{control} list specifying the fitting process are similar
+ ## to the codes shown above.
+}
+
+}
+\references{
+Luo, S., Chen, Y., Su, X., Chu, H., (2014). mmeta: An R Package for
  Multivariate Meta-Analysis. \cr
- \emph{Journal of Statistical Software}, 56(11), 1-26. \cr 
+ \emph{Journal of Statistical Software}, 56(11), 1-26. \cr
  <https://dukespace.lib.duke.edu/dspace/bitstream/handle/10161/15522/2014Luo_Chen_Su_Chu_JSS_mmeta.pdf?sequence=1> \cr
- 
  Chen, Y., Luo, S., (2011a). A Few Remarks on "Statistical Distribution of the Difference of
 Two Proportions' by Nadarajah and Kotz, Statistics in Medicine 2007; 26(18):3518-3523". \cr
 \emph{Statistics in Medicine, 30(15)}, 1913-1915. \cr
 <doi:10.1002/sim.4248> \cr
-
 Chen, Y., Chu, H., Luo, S., Nie, L., and Chen, S. (2014a). Bayesian
 analysis on meta-analysis of case-control studies accounting for
 within-study correlation. \cr
 \emph{Statistical Methods in Medical Research}, 4.6 (2015): 836-855. \cr
 <https://doi.org/10.1177/0962280211430889>. \cr
-
 Chen, Y., Luo, S., Chu, H., Su, X., and Nie, L. (2014b). An empirical
 Bayes method for multivariate meta-analysis with an application in
 clinical trials. \cr
 \emph{Communication in Statistics: Theory and Methods}, 43.16 (2014): 3536-3551. \cr
 <https://doi.org/10.1080/03610926.2012.700379>. \cr
-
 Chen, Y., Luo, S., Chu, H., Wei, P. (2013). Bayesian inference on risk
 differences: an application to multivariate meta-analysis of adverse
 events in clinical trials. \cr

@@ -28,7 +28,7 @@ SingleTable.create(a1,b1,a2,b2,rho,y1,n1,y2,n2,model,measure)
 \item{model}{a character string specifying the model. Options are \code{Independent} and \code{Sarmanov}. \code{Independent} is
 independent beta-binomial model. \code{Sarmanov}is Sarmanov beta-binomial model.}
 
-\item{measure}{a character string specifying a measure. Options are 
+\item{measure}{a character string specifying a measure. Options are
 \code{OR}, \code{RR}, and \code{RD}. \code{OR} is odds
  ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 }
@@ -39,16 +39,16 @@ The Objects of this class contain the meta-data for generic functions: \code{Sin
 of the object must be non-null under \code{SingleTable.create}:
 \item{measure}{the value of \code{measure} argument.}
 \item{model}{the value of \code{model} argument.}
-\item{data}{a numeric vector of input data with components: \code{y1}, \code{n1}, \code{y2}, \code{n2}}  
+\item{data}{a numeric vector of input data with components: \code{y1}, \code{n1}, \code{y2}, \code{n2}}
 \item{parameter}{a numeric vector of the hyperparameters: \code{a1}, \code{b1}, \code{a2}, \code{b2}, and \code{rho}.}
 }
 \description{
-Create an object of class \code{MultipleTables}, which is 
+Create an object of class \code{SingleTable}, which is
 a components list of exact posterior inference based on single 2x2 table.
 }
 \details{
 There are two kinds of study design, i.e., prospective study or
-clinical trial, and retrospective or case-control study. 
+clinical trial, and retrospective or case-control study.
 In a prospective study or clinical trial, \code{data} is a data
 frame that contains \code{y1}, \code{n1}, \code{y2}, \code{n2}.
 \code{y1} is the number of subjects
@@ -73,18 +73,18 @@ When model='\code{Sarmanov}', \code{rho} is subject to constraints. See Chen et 
 \examples{
 ## Specify data (y1, n1, y2, n2), parameters (a1, b1, a2, b2, rho), model (Sarmanov/Independent),
 ## and Specify measure(OR/RR/RD)
-## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
+## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5.
 ## Create object \code{single_table_obj}
  \donttest{
  library(mmeta)
  library(ggplot2)
- single_table_obj <- SingleTable.create(a1=0.5,b1=0.5, 
+ single_table_obj <- SingleTable.create(a1=0.5,b1=0.5,
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")}
 }
 \references{
 Chen, Y., Luo, S., (2011a). A Few Remarks on "Statistical Distribution of the Difference of
 Two Proportions' by Nadarajah and Kotz, Statistics in Medicine 2007; 26(18):3518-3523". \cr
-\emph{Statistics in Medicine, 30(15)}, 1913-1915. \cr 
+\emph{Statistics in Medicine, 30(15)}, 1913-1915. \cr
 <doi:10.1002/sim.4248> \cr
 }
 \seealso{

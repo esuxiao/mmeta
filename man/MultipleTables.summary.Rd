@@ -25,7 +25,7 @@ and fitted by \code{MultipleTables.modelFit}.}
 \item{control}{a list can be specified to control the fitting process.}
 }
 \value{
-A list with the following components: model, posterior mean & equal tail confidence interval of overall measure, 
+A list with the following components: model, posterior mean & equal tail confidence interval of overall measure,
 estimated hyperparameters, the chi-square test statistics & the p-value of the likelihood ratio test,
 posterior means & the lower/upper bounds of the equal tail confidence intervals of study-specific measure.
 }
@@ -41,7 +41,8 @@ Summarize the model of the class \code{MultipleTables} fitted by \code{MultipleT
  colorectal['study_name'] <- colorectal['studynames']
  ## If exact method is used, the codes for sampling method are similar.
  ## Create object multiple_tables_obj_exact
- multiple_tables_obj_exact <- MultipleTables.create(data=colorectal, measure='OR', model= 'Sarmanov')
+ multiple_tables_obj_exact <- MultipleTables.create(data=colorectal,
+ measure='OR', model= 'Sarmanov')
  ## Model fit default
  multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact')
  ## Summary of the fitting process (default)
@@ -51,9 +52,11 @@ Summarize the model of the class \code{MultipleTables} fitted by \code{MultipleT
  ## If set alpha level to 0.1
  multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.1)
  ## If set digit to 4
- multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.05, digit = 4)
+ multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact,
+ alpha = 0.05, digit = 4)
  ## If decided not to print out
- multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.05, digit = 4,verbose = FALSE)
+ multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact,
+ alpha = 0.05, digit = 4,verbose = FALSE)
 }
 }
 \seealso{

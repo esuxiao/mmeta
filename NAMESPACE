@@ -5,22 +5,22 @@ importFrom("graphics", "abline", "arrows", "axis", "legend", "par",
 importFrom("stats", "dbeta", "density", "median", "optim", "pchisq",
              "qnorm", "quantile", "rbeta")
 importFrom("stats", "rnorm", "runif")
-
+import(ggplot2)
 
 useDynLib(mmeta,.registration = TRUE)
 
 # Exported functions
 export(SingleTable.create,
         SingleTable.modelFit,
-        SingleTable.summary,  
-        SingleTable.plot, 
-        MultipleTables.create, 
+        SingleTable.summary,
+        SingleTable.plot,
+        MultipleTables.create,
         MultipleTables.modelFit,
         MultipleTables.summary,
         MultipleTables.plot
        )
-       
-       
+
+
 
 
 

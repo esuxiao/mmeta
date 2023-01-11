@@ -10,7 +10,7 @@ MultipleTables.create(data = NULL, measure = NULL, model = NULL)
 \item{data}{a data frame that contains \code{y1}, \code{n1}, \code{y2}, \code{n2} of multiple tables.}
 
 \item{measure}{a character string specifying a measure. Options are
-\code{OR}, \code{RR}, and \code{RD}. \code{OR} is odds 
+\code{OR}, \code{RR}, and \code{RD}. \code{OR} is odds
 ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 
 \item{model}{a character string specifying the model. Options are
@@ -18,7 +18,7 @@ ratio, \code{RR} is relative risk, and \code{RD} is risk difference.}
 independent beta-binomial model. \code{Sarmanov}is Sarmanov beta-binomial model.}
 }
 \value{
-An object is returned, inheriting from class \code{MultipleTables}. 
+An object is returned, inheriting from class \code{MultipleTables}.
 Objects of this class contain the meta-data for generic functions: \code{MultipleTables.modelFit},
  \code{MultipleTables.summary}, and \code{MultipleTables.plot}.
  The following valuesof the object must be non-null under \code{MultipleTables.create}.
@@ -27,7 +27,7 @@ Objects of this class contain the meta-data for generic functions: \code{Multipl
  \item{data}{a data matrix with rows being \code{y1}, \code{n1}, \code{y2}, and \code{n2}.}
 }
 \description{
-Create an object of class \code{MultipleTables}, which is 
+Create an object of class \code{MultipleTables}, which is
 a components list of exact posterior inference based on multiple 2x2 tables.
 }
 \examples{

@@ -13,6 +13,8 @@ SingleTable.summary(
 )
 }
 \arguments{
+\item{single_table_Obj}{The object created by \code{SingleTable.create} and fitted by \code{SingleTable.modelFit}.}
+
 \item{alpha}{a numeric value specifying the significant level. Default value sets to 0.05.}
 
 \item{verbose}{a logical value; if TRUE(default), the detailed summary messages will display.}
@@ -20,8 +22,6 @@ SingleTable.summary(
 \item{digit}{an integer value specifying how many decimal places to keep. Default value sets to 3.}
 
 \item{control}{a list can be specified to control the fitting process.}
-
-\item{sing_table_obj}{The object created by \code{SingleTable.create} and fitted by \code{SingleTable.modelFit}.}
 }
 \value{
 A list with the following components: measure, model, posterior mean, posterior median, equal tail CI, and HDR CI.
@@ -30,13 +30,13 @@ A list with the following components: measure, model, posterior mean, posterior 
 Summarize model of the single table analysis fitted by \code{SingleTable.modelFit}.
 }
 \examples{
-## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5. 
+## Assume we have a 2x2 table:{{40,56},{49,60}} and set prior parameters as a1=b1=a2=b2=rho=0.5.
  \donttest{
  library(mmeta)
  library(ggplot2)
  ## If exact method is used, the codes for sampling method are similar.
  ## Create object \code{single_table_obj_exact}
- single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5, 
+ single_table_obj_exact <- SingleTable.create(a1=0.5,b1=0.5,
  a2=0.5,b2=0.5,rho=0.5, y1=40, n1=96, y2=49, n2=109,model="Sarmanov",measure="OR")
  ## model fit
  single_table_obj_exact <- SingleTable.modelFit(single_table_obj_exact, method = 'exact')
