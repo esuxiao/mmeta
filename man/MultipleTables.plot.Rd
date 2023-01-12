@@ -70,6 +70,8 @@ overall measure with 95\% credible/confidence intervals are plotted.
   measure='OR', model= 'Sarmanov')
  ## Model fit default
  multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact')
+ ## Summary of the fitting process (default)
+ multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact)
  ## Density plot, overlay
  ## Note: There are no enough types of line, if we have too many densities!
  MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
@@ -86,7 +88,7 @@ overall measure with 95\% credible/confidence intervals are plotted.
  ## If select three studies
  MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
  layout_type = 'overlay',selected_study_names = c('Bell','Chen','Oda'), xlim = c(0,5))
- ## We can add external layouts for the return ggplot2 : * xlab as Odds ratio
+ ## We can add external layouts for the return ggplot2. xlab as Odds ratio
  ggplot2_obj <- MultipleTables.plot(multiple_tables_obj_exact,
  plot_type = 'density', layout_type = 'overlay', by = 'color',xlim = c(0,5))
  ggplot2_obj + xlab('Odds Ratio')  + ggtitle('OR ration for XX cancer')

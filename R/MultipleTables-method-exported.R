@@ -360,6 +360,8 @@ MultipleTables.summary<- function(multiple_tables_object,
 #'   measure='OR', model= 'Sarmanov')
 #'  ## Model fit default
 #'  multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact')
+#'  ## Summary of the fitting process (default)
+#'  multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact)
 #'  ## Density plot, overlay
 #'  ## Note: There are no enough types of line, if we have too many densities!
 #'  MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
