@@ -1,26 +1,6 @@
-# mmeta
+# Branch `RCMD_check_log` for `mmeta` repository
 
-## Install package
-
-### Install pacakge hosted on CRAN
-
-```
-install.package('mmeta')
-```
-
-
-### Install package from GitHub
-
-* Install the package hosted on main branch
-```
-install_github("esuxiao/mmeta")
-
-```
-* Install the package hosted on branch specific branch, such as `V3.0_dev`: 
-
-```
-install_github("esuxiao/mmeta", ref = 'V3.0_dev')
-
-```
+# Purpose 
+This branch was created to save the check log and error.
 
 
