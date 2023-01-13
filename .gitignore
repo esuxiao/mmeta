@@ -46,6 +46,3 @@ vignettes/*.pdf
 
 # files generate by google drive
 *.ini
-
-# log file for R CMD check
-*.log
