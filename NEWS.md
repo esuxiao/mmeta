@@ -1,4 +1,4 @@
-## version 3.0
+## version 3.0.0
 
 ---
 
@@ -11,9 +11,10 @@
 - For details of new functions regarding multipletables & singletable, please check the manual.
 
 
-## version 2.4
+## version 2.4.0
 
 ---
+
 
 ### Updates
 
