@@ -7,21 +7,21 @@ samplePosterior <- function(parms_prior, data, model, measure, n_samples, mcmc_i
     return(samplePosteriorIndependent(parms_prior, data, measure, n_samples))
   if(model == 'Sarmanov')
     return(samplePosteriorSarmanov(parms_prior, data, measure, n_samples, mcmc_initial))
-  
+
 }
 
 
 samplePosteriorIndependent <- function(parms, data, measure, n_samples) {
-  
-  parms_posterior <- parmsPosteriorIndependentCal(parms_prior, data)
+
+  parms_posterior <- parmsPosterior(parms, data)
   p1 <- rbeta(n_samples, shape1=parms_posterior['alpha1'], shape2=parms_posterior['beta1'])
   p2 <- rbeta(n_samples, shape1=parms_posterior['alpha2'], shape2=parms_posterior['beta2'])
-  
-  if (measure=="OR") 
+
+  if (measure=="OR")
     return(p2/(1-p2)*(1-p1)/p1)
-  if (measure=="RR") 
+  if (measure=="RR")
     return(p2/p1)
-  if (measure=="RD") 
+  if (measure=="RD")
     return(p2-p1)
 }
 
@@ -29,22 +29,22 @@ samplePosteriorIndependent <- function(parms, data, measure, n_samples) {
 
 
 samplePosteriorSarmanov<-function(parms, data,measure,n_samples, mcmc_initial) {
- 
-  
+
+
   parms_posterior  <- parmsPosterior(parms, data)
-  samples <- arms(mcmc_initial, 
-                  logDensitySarmanovP1P2, 
-                  supoort, 
+  samples <- arms(mcmc_initial,
+                  logDensitySarmanovP1P2,
+                  supoort,
                   n_samples,
                   parms_posterior)
-  
-  if (measure=="OR") 
+
+  if (measure=="OR")
     return(samples[,2]/(1-samples[,2])*(1-samples[,1])/samples[,1])
-  if (measure=="RR") 
+  if (measure=="RR")
     return(samples[,2]/samples[,1])
-  if (measure=="RD") 
+  if (measure=="RD")
     return(samples[,2]-samples[,1])
-  
+
 }
 
 
@@ -63,4 +63,4 @@ logDensitySarmanovP1P2 <- function(x,parm){
   delta2 <- sqrt(mu2*(1-mu2)/(a2+b2+1))
   return(log(dbeta(p1,shape1=a1,shape2=b1)*dbeta(p2,shape1=a2,shape2=b2)))
 }
-  
+
