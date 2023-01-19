@@ -40,8 +40,12 @@ vignettes/*.pdf
 
 # Compiled .c or fortran object
 *.so 
+*.o
 *.dll
+
 
 # files generate by google drive
 *.ini
 
+# log file for R CMD check
+*.log

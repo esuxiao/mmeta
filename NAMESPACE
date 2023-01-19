@@ -5,21 +5,22 @@ importFrom("graphics", "abline", "arrows", "axis", "legend", "par",
 importFrom("stats", "dbeta", "density", "median", "optim", "pchisq",
              "qnorm", "quantile", "rbeta")
 importFrom("stats", "rnorm", "runif")
-
+import(ggplot2)
 
 useDynLib(mmeta,.registration = TRUE)
 
 # Exported functions
-export(singletable,multipletables,
-        plot.multipletables,  summary.multipletables, 
-       plot.singletable, summary.singletable
+export(SingleTable.create,
+        SingleTable.modelFit,
+        SingleTable.summary,
+        SingleTable.plot,
+        MultipleTables.create,
+        MultipleTables.modelFit,
+        MultipleTables.summary,
+        MultipleTables.plot
        )
-       
-       
-#S3 methods
-S3method(plot,multipletables)
-S3method(summary,multipletables)
-S3method(summary, singletable)
-S3method(plot, singletable)
+
+
+
 
 

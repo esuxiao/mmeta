@@ -37,14 +37,6 @@ The dataset \code{withdrawal} is used to conduct exact posterior
 inference of relative risks and risk difference for multiple 2X2 tables. 
 }
 
-
-
-\seealso{
-  \code{\link{multipletables}},
-    \code{\link{summary.multipletables}},
-    \code{\link{plot.multipletables}},
-}
-
 \examples{
 \donttest{
 library(mmeta)
