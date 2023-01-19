@@ -22,7 +22,7 @@ MultipleTables.plot(
 produce. Options are \code{density} and \code{forest} (default). See details}
 
 \item{layout_type}{a character string specifying the type of the density plots (i.e., when \code{plot_type=‘density’}).
-Options are \code{sidebyside} and \code{overlay} (default). This argument is NULL when \code{plot_type=‘forest’}。}
+Options are \code{sidebyside} and \code{overlay} (default). This argument is NULL when \code{plot_type=‘forest’}}
 
 \item{selected_study_names}{a numeric value or vector specifying which studies to
 be plotted. By default (when \code{NULL}), all of the studies will be plotted.}
