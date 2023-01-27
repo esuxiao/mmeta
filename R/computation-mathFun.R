@@ -87,9 +87,6 @@ inverseMatrixFunc <- function(Mat){
 ### Data:    7/13/2012
 ###################################################################################
 hypergeoFun <- function(aa, bb, cc, xx, YY=0) {
- #   dyn.load(SHARED_LIBRARY_PATH)
- #   return(.Fortran("hygfx", a=as.double(aa),b=as.double(bb),c=as.double(cc),
- #                  x=as.double(xx),y=as.double(YY),PACKAGE="mmeta")$y)
 
   .Fortran("hygfx", a=as.double(aa),b=as.double(bb),c=as.double(cc),
            x=as.double(xx),y=as.double(YY),PACKAGE="mmeta")$y
