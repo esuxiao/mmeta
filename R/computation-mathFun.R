@@ -1,10 +1,10 @@
 
-is_integer <- function(x){ 
+is_integer <- function(x){
   return(x%%1==0)
 }
 
 
-supoort<-function(x,parm){ 
+supoort<-function(x,parm){
   return(all(x>0)&all(x<1))
 }
 
@@ -26,15 +26,15 @@ rhoBoundarySarmanov <- function(a1, b1, a2, b2){
 
 
 liklihoodRatioTest <- function(loglik_H0, loglike_H1){
-  
+
   chi2_value <- (-2*(loglik_H0 - loglike_H1))
   p_value <- pchisq(chi2_value,
                           df=1, lower.tail=F)
-  return(list(chi2_value=chi2_value, p_value=p_value)) 
+  return(list(chi2_value=chi2_value, p_value=p_value))
 }
 
-minlength_CI <- function(x, alpha, left=-1E10, right=1E10){                     
-  n <- length(x)                                                                 
+minlength_CI <- function(x, alpha, left=-1E10, right=1E10){
+  n <- length(x)
   sortx <- sort(c(x, left, right))
   disx <- sortx[2:(n+2)]-sortx[1:(n+1)]
   xn <- ceiling((n+1)*alpha)
@@ -60,12 +60,12 @@ inverseMatrixFunc <- function(Mat){
   ## checking Mat to be correctly defined
   ## (i.e. no NA/Infinite, symmetric, no negative or zero diagonal element)
   ## if not, the inverse is a matrix of the same dimension of Mat with NAs
-  
+
   checkHesesianMat(Mat)
-  
+
   mat_inverse <- matrix(NA, nrow=nrow(Mat), ncol=ncol(Mat))
-  
-  
+
+
     mat_inverse <- matrix(NA, nrow=nrow(Mat), ncol=ncol(Mat))
     mat_stand <- diag(1/sqrt(diag(Mat)))%*%Mat%*%diag(1/sqrt(diag(Mat)))
     mat_rank <- qr(mat_stand)$rank
@@ -74,7 +74,7 @@ inverseMatrixFunc <- function(Mat){
     } else{
       stop('The hessian matrix is not full rank.')
     }
-  
+
   return(mat_inverse)
 }
 
@@ -87,9 +87,9 @@ inverseMatrixFunc <- function(Mat){
 ### Data:    7/13/2012
 ###################################################################################
 hypergeoFun <- function(aa, bb, cc, xx, YY=0) {
-  dyn.load(SHARED_LIBRARY_PATH)
-  return(.Fortran("hygfx", a=as.double(aa),b=as.double(bb),c=as.double(cc),
-                  x=as.double(xx),y=as.double(YY),PACKAGE="mmeta")$y)
+
+  .Fortran("hygfx", a=as.double(aa),b=as.double(bb),c=as.double(cc),
+           x=as.double(xx),y=as.double(YY),PACKAGE="mmeta")$y
 }
 
 ###################################################################################
@@ -101,27 +101,27 @@ hypergeoFun <- function(aa, bb, cc, xx, YY=0) {
 ### Data:    7/13/2012
 ###################################################################################
 omegaCal <- function(y1, n1, y2, n2, a1, b1, a2, b2, rho) {
-  alpha1 <- y1+a1 
+  alpha1 <- y1+a1
   beta1 <- n1-y1+b1
   alpha2 <- y2+a2
   beta2 <- n2-y2+b2
-  
+
   # mu1, mu2: marginal means of p1 and p2
   mu1 <- a1/(a1+b1); mu1.1 <- 1-mu1
   mu2 <- a2/(a2+b2); mu2.1 <- 1-mu2
-  
+
   # delta1, delta2: marginal sd of p1 and p2
   delta1 <- sqrt(mu1*mu1.1/(a1+b1+1))
   delta2 <- sqrt(mu2*mu2.1/(a2+b2+1))
-  
+
   # myd: d=(mu1*mu2)/(delta1*delta2)
   myd <- (mu1*mu2)/(delta1*delta2)
-  
+
   ## v1-v4 are weights
   v2 <- v3 <- -rho*myd
   v1 <- 1 - v2
   v4 <- -v2
-  
+
   temp1 <- (lgamma(alpha1)+lgamma(beta1)+lgamma(alpha2)+lgamma(beta2)
             +lgamma(a1+b1)+lgamma(a2+b2)
             -(lgamma(a1)+lgamma(b1)+lgamma(a2)+lgamma(b2)
@@ -138,7 +138,7 @@ omegaCal <- function(y1, n1, y2, n2, a1, b1, a2, b2, rho) {
             +lgamma(a1+b1+1)+lgamma(a2+b2+1)
             -(lgamma(a1+1)+lgamma(b1)+lgamma(a2+1)+lgamma(b2)
               +lgamma(alpha1+beta1+1)+lgamma(alpha2+beta2+1)))
-  
+
   eps <- 1e-30
   if (abs(v1) < eps) {
     omega1 <- 0
@@ -160,7 +160,7 @@ omegaCal <- function(y1, n1, y2, n2, a1, b1, a2, b2, rho) {
   } else {
     omega4 <- 1/(v1/v4*exp(temp1-temp4) + v2/v4*exp(temp2-temp4) + v3/v4*exp(temp3-temp4) + 1)
   }
-  
+
   return(list(omega1=omega1, omega2=omega2, omega3=omega3, omega4=omega4))
 }
 
