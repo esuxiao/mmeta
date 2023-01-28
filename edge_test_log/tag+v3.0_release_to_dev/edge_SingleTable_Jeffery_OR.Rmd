@@ -1,0 +1,263 @@
+---
+title: "Edge case test SingleTable class: Jeffery prior, OR, Samanov "
+author: "Jiajie Chen, Xiao Su"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Enviroment setup
+
+
+```{r}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+source_all_files <- function(path){
+  files <- list.files(path)
+  for(i in 1:length(files)){
+    full_path <- paste(path, files[i],sep="")
+    source(full_path)
+  }
+}
+### Load the new version
+library(ggplot2)
+new_verrsion_path <- 'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/'
+source_all_files(new_verrsion_path)
+
+
+```
+
+## Test sampling  method
+
+### Create object
+
+rho is out of boundary
+```{r}
+try(single_table_obj_samling <- SingleTable.create(a1=0.5, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.9, y1=40, n1=96, y2=49, n2=109,
+                              model="Sarmanov",measure="OR"))
+```
+negative parameters
+```{r}
+try(single_table_obj_samling <- SingleTable.create(a1=-1, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.2, y1=40, n1=96, y2=49, n2=109,
+                              model="Sarmanov",measure="OR"))
+```
+
+y1 > n1
+```{r}
+try(single_table_obj_samling <- SingleTable.create(a1=1, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.2, y1=40, n1=39, y2=49, n2=109,
+                              model="Sarmanov",measure="OR"))
+```
+
+
+illegal measure
+```{r}
+try(single_table_obj_samling <- SingleTable.create(a1=1, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.2, y1=40, n1=39, y2=49, n2=109,
+                              model="Sarmanov",measure="OR1"))
+```
+illegal model
+```{r}
+try(single_table_obj_samling <- SingleTable.create(a1=1, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.2, y1=40, n1=39, y2=49, n2=109,
+                              model="Sarm",measure="OR"))
+```
+Normal case( y1= n1)
+```{r}
+single_table_obj_samling <- SingleTable.create(a1=0.5, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.5, y1=40, n1=40, y2=49, n2=109,
+                              model="Sarmanov",measure="OR")
+```
+
+### model fit
+
+no SingleTable object
+```{r}
+try(SingleTable.modelFit(list(a=1), method = 'sampling', control = list(n_sample = 3000)))
+```
+
+illegal method
+```{r}
+try(SingleTable.modelFit(single_table_obj_samling, method = 'sampling1', control = list(n_sample = 3000)))
+```
+
+normal case
+```{r}
+single_table_obj_samling <- SingleTable.modelFit(single_table_obj_samling, method = 'sampling', control = list(n_sample = 3000))
+```
+
+
+### Summary
+
+not fitted object
+```{r}
+
+single_table_obj_samling1 <- SingleTable.create(a1=0.5, b1=0.5, 
+                                               a2=0.5, b2=0.5,
+                              rho=0.5, y1=40, n1=40, y2=49, n2=109,
+                              model="Sarmanov",measure="OR")
+try(SingleTable.summary(single_table_obj_samling1, alpha = 0.05))
+```
+not SingleTable object
+
+```{r}
+
+
+try(SingleTable.summary(list(), alpha = 0.05))
+```
+
+illegal alpha
+```{r}
+try(SingleTable.summary(single_table_obj_samling, alpha = 2))
+```
+
+illegal digit
+```{r}
+try(SingleTable.summary(single_table_obj_samling, digit = 2.5))
+```
+
+normal case
+```{r}
+single_table_obj_samling <- SingleTable.summary(single_table_obj_samling, alpha = 0.05)
+```
+
+change alpha level to 0.1
+```{r}
+single_table_obj_samling <- SingleTable.summary(single_table_obj_samling, alpha = 0.1)
+
+```
+
+
+
+change digit to 2
+```{r}
+single_table_obj_samling <- SingleTable.summary(single_table_obj_samling, digit  = 2)
+
+```
+not print output
+```{r}
+single_table_obj_samling <- SingleTable.summary(single_table_obj_samling, verbose = FALSE)
+
+```
+
+## overlay density: 
+
+default
+
+```{r}
+SingleTable.plot(single_table_obj_samling, type = 'overlay')
+```
+set xlim between 0 to 4 and add vertical line at x = 1
+
+```{r}
+plot_obj <- SingleTable.plot(single_table_obj_samling, type = 'overlay',xlim = c(0,4), add_vertical = 1)
+plot_obj 
+
+```
+Override the xlab and add title via ggplot2
+
+```{r}
+plot_obj <- SingleTable.plot(single_table_obj_samling, type = 'overlay',xlim = c(0,4), add_vertical = 1)
+plot_obj + xlab('Odds ratio') + ggtitle("Plot of density function") 
+```
+
+### Plot side-by-side
+
+default
+```{r}
+SingleTable.plot(single_table_obj_samling, type = 'side_by_side')
+
+```
+
+set xlim between 0 to 4 and add vertical line at x = 1
+
+```{r}
+SingleTable.plot(single_table_obj_samling, type = 'side_by_side',
+                 xlim = c(0,4), add_vertical = 1)
+
+```
+
+override xlab and add title via ggplot2
+```{r}
+plot_obj <- SingleTable.plot(single_table_obj_samling, type = 'side_by_side',
+                 xlim = c(0,4), add_vertical = 1)
+
+plot_obj + xlab('Odds ratio') + ggtitle("Plot of density function") 
+```
+
+
+
+## Test exact  method
+
+### Create object
+
+```{r}
+single_table_obj_exact <- SingleTable.create(a1=0.5, b1=0.5, a2=0.5, b2=0.5,
+                              rho=0.5, y1=40, n1=96, y2=49, n2=109,
+                              model="Sarmanov",measure="OR")
+
+```
+
+### Model fit
+```{r}
+single_table_obj_exact <- SingleTable.modelFit(single_table_obj_exact, method = 'exact')
+```
+
+
+### Summary
+
+```{r}
+single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.05)
+```
+change alpha level to 0.1
+```{r}
+single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, alpha = 0.1)
+```
+
+change digit to 4
+```{r}
+single_table_obj_exact <- SingleTable.summary(single_table_obj_exact, digit = 4)
+```
+
+
+### Plot: overlay
+
+add vertical line at x = 1 and set xlim between 0 and 6
+
+```{r}
+SingleTable.plot(single_table_obj_exact, type = 'overlay',xlim = c(0,6), add_vertical = 1)
+```
+
+
+* override xlab and add title
+* change line width and color of vertical line
+```{r}
+plot_obj <- SingleTable.plot(single_table_obj_exact, type = 'overlay',xlim = c(0,4), add_vertical = 1)
+plot_obj + xlab('Odds ratio') + ggtitle('density plot: side by side') + 
+  geom_vline(xintercept=1,linewidth=1,colour="blue")
+```
+
+
+### Plot: side-by-side
+
+default
+```{r}
+SingleTable.plot(single_table_obj_exact, type = 'side_by_side',
+                 xlim = c(0,4), add_vertical = 1)
+
+```
+
+
+```{r}
+plot_obj <- SingleTable.plot(single_table_obj_exact, type = 'side_by_side',
+                 xlim = c(0,4))
+
+plot_obj + xlab('Odds ratio') + geom_vline(xintercept=1,linewidth=1,colour="blue", linetype="dotdash")
+```

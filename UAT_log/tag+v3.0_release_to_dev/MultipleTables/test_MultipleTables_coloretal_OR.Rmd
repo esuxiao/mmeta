@@ -1,0 +1,558 @@
+---
+title: 'UAT: MultipleTables coloretal: OR '
+author: "Jiajie Chen, Xiao Su"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+# Enviroment setup
+Load colorectal
+
+```{r}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+source_all_files <- function(path){
+  files <- list.files(path)
+  for(i in 1:length(files)){
+    full_path <- paste(path, files[i],sep="")
+    source(full_path)
+  }
+}
+### Load the new version
+library(ggplot2)
+new_verrsion_path <- 'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/'
+source_all_files(new_verrsion_path)
+load('G:/My Drive/ShareFolder/mmeta_package/working/mmeta/data/colorectal.rda')
+
+
+```
+
+# Test sampling  method
+
+## Create object
+
+* load the data:
+  * here use colorectal as example
+  * input data is a data frame.
+  * the input data frame should contain the following columns:
+    * y1
+    * n1
+    * y2
+    * n2
+* specify model
+* specify measure
+```{r}
+colorectal['study_name'] <- colorectal['studynames']
+multiple_tables_obj_sampling <- MultipleTables.create(data=colorectal, measure='OR', model= 'Sarmanov')
+```
+
+### model fit
+
+* estimate the hyper parameters via maximum likelihood
+* draw posterior samples for each study
+* calculate posterior density for each study
+* likelihood ratio test for correlation
+
+default:
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling')
+```
+
+control list can be specified to control the fitting process:
+* n_samples: number of posterior samples; Defualt is 5000.
+* mcmc_initial: initial values for (p1, p2) in MCMC; Default is  c(0.5, 0.5)
+* upper_bound: upper bound for the measure. Default is 100.
+* lower_bound: lower bound for the measure. For RD, default is -1. For RR/OR, defualt is 0.
+* num_grids: number of grids to calculate density; The defualt is 20498.
+* optim_method: optimazation method. Default is "L-BFGS-B". Please refer to 'optim' function.
+* maxit = maximum number of iterations for iteration. Default is 1000. Please refer to 'optim' function.,
+* initial_values: initial value for optimization. The default approach is to fit overdispertion beta-bin model to generate initial value via aod package. 
+
+
+set number of posterior samples is 5000
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling', 
+                                                        control = list(n_samples = 3000))
+```
+
+
+set intial values correspoinding to c(a1, b1, a2, b2, rho) as c(1,1,1,1,0):
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling', 
+                                                        control = list(initial_values = c(1,1,1,1,0)))
+```
+
+
+maximum number of iterations for iteration is 100
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling', 
+                                                        control = list(maxit = 100))
+```
+
+
+maximum number of iterations for iteration is 100 and number of posterior samples as 3000
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.modelFit(multiple_tables_obj_sampling, method = 'sampling', 
+                                                        control = list(maxit = 100, nsamples = 3000))
+```
+
+
+
+
+
+
+## Summary
+
+* Estimate overall measure (point and confidence interval)
+* Estimate study-specific measure(point and confidence interval)
+
+
+default
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.summary(multiple_tables_obj_sampling)
+```
+
+
+
+alpha = 0.1 
+```{r}
+MultipleTables.summary(multiple_tables_obj_sampling, alpha = 0.1)
+```
+
+
+
+set digit = 4
+```{r}
+MultipleTables.summary(multiple_tables_obj_sampling, alpha = 0.05, digit = 4)
+```
+
+
+not print out 
+```{r}
+MultipleTables.summary(multiple_tables_obj_sampling, alpha = 0.05, digit = 4,
+                       verbose = FALSE)
+```
+
+
+
+## Strucutre of MultipleTables objects
+```{r}
+str(multiple_tables_obj_sampling)
+```
+
+## Plot
+
+####  overlay density: 
+
+Density plot :overlay (default)
+
+
+Note 
+* There are no enough types of line.
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay')
+
+```
+
+Set by = 'color'
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color'
+                   )
+
+```
+
+
+Set by = 'color' and specify xlim as 0 to 5.
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5)
+                   )
+
+```
+
+Set by = 'color' and specify xlim as 0 to 5 and add vertical line at OR = 1
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5),
+                    add_vertical = 1
+                   )
+
+```
+
+
+
+select three studies: 
+```{r}
+ggplot2_obj <- MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay',
+                    selected_study_names = c('Bell','Chen','Oda'),
+                    xlim = c(0,5)) 
+
+
+ggplot2_obj
+```
+
+
+add external layouts for the return ggplot2 :
+* xlab as Odds ratio
+```{r}
+ggplot2_obj <- MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5)) 
+  
+
+ggplot2_obj + xlab('Odds Ratio')  + ggtitle('OR ration for XX cancer')
+ggplot2_obj
+```
+
+
+
+
+###  side by side density: 
+
+
+density plot: side by side, default
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side')
+
+```
+set xlim between 0 to 5; add vetical line at OR = 1
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side',
+                    add_vertical = 1,
+                    xlim = c(0,5))
+
+```
+
+
+select 3 studies: study_name in c('Bell','Chen','Oda')
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side',
+                    selected_study_names = c('Bell','Chen','Oda'),
+                    xlim = c(0,5))
+
+```
+
+
+
+
+### Forest plot
+
+forest plot: default
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'forest')
+
+```
+add vertical line at OR = 1
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio')
+
+```
+
+forest plot: add vertical line and set digit = 2 (need to re-run summary method)
+```{r}
+multiple_tables_obj_sampling <- MultipleTables.summary(multiple_tables_obj_sampling, alpha = 0.05, digit = 2,
+                       verbose = FALSE)
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio')
+
+```
+display OR in log scale
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio') +  scale_x_continuous(trans='log10')
+
+```
+
+
+forest plot: not show the CIs
+```{r}
+MultipleTables.plot(multiple_tables_obj_sampling, plot_type = 'forest', add_vertical =  1, show_CI = FALSE) +
+  xlab('Odds ratio')
+
+```
+
+
+
+## Exact method
+
+
+## Create object
+
+* load the data:
+  * here use colorectal as example
+  * input data is a data frame.
+  * the input data frame should contain the following columns:
+    * y1
+    * n1
+    * y2
+    * n2
+* specify model
+* specify measure
+```{r}
+colorectal['study_name'] <- colorectal['studynames']
+multiple_tables_obj_exact <- MultipleTables.create(data=colorectal, measure='OR', model= 'Sarmanov')
+```
+
+### model fit
+
+* estimate the hyper parameters via maximum likelihood
+* draw posterior samples for each study
+* calculate posterior density for each study
+* likelihood ratio test for correlation
+
+default:
+```{r}
+multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact')
+```
+
+control list can be specified to control the fitting process:
+* n_samples: number of posterior samples; Defualt is 5000.
+* mcmc_initial: initial values for (p1, p2) in MCMC; Default is  c(0.5, 0.5)
+* upper_bound: upper bound for the measure. Default is 100.
+* lower_bound: lower bound for the measure. For RD, default is -1. For RR/OR, defualt is 0.
+* num_grids: number of grids to calculate density; The defualt is 20498.
+* optim_method: optimazation method. Default is "L-BFGS-B". Please refer to 'optim' function.
+* maxit = maximum number of iterations for iteration. Default is 1000. Please refer to 'optim' function.,
+* initial_values: initial value for optimization. The default approach is to fit overdispertion beta-bin model to generate initial value via aod package. 
+
+
+set number of posterior samples is 5000
+```{r}
+multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
+                                                        control = list(n_samples = 3000))
+```
+
+
+set intial values correspoinding to c(a1, b1, a2, b2, rho) as c(1,1,1,1,0):
+```{r}
+multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
+                                                        control = list(initial_values = c(1,1,1,1,0)))
+```
+
+
+maximum number of iterations for iteration is 100
+```{r}
+multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
+                                                        control = list(maxit = 100))
+```
+
+
+maximum number of iterations for iteration is 100 and number of posterior samples as 3000
+```{r}
+multiple_tables_obj_exact <- MultipleTables.modelFit(multiple_tables_obj_exact, method = 'exact', 
+                                                        control = list(maxit = 100, nsamples = 3000))
+```
+
+
+
+
+
+
+## Summary
+
+* Estimate overall measure (point and confidence interval)
+* Estimate study-specific measure(point and confidence interval)
+
+
+default
+```{r}
+multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact)
+```
+
+
+
+alpha = 0.1 
+```{r}
+MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.1)
+```
+
+
+
+set digit = 4
+```{r}
+MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.05, digit = 4)
+```
+
+
+not print out 
+```{r}
+MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.05, digit = 4,
+                       verbose = FALSE)
+```
+
+## Strucutre of MultipleTables objects
+```{r}
+str(multiple_tables_obj_exact)
+```
+
+## Plot
+
+####  overlay density: 
+
+Density plot :overlay (default)
+
+
+Note 
+* There are no enough types of line.
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay')
+
+```
+
+Set by = 'color'
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color'
+                   )
+
+```
+
+
+Set by = 'color' and specify xlim as 0 to 5.
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5)
+                   )
+
+```
+
+Set by = 'color' and specify xlim as 0 to 5 and add vertical line at OR = 1
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5),
+                    add_vertical = 1
+                   )
+
+```
+
+
+
+select three studies: 
+```{r}
+ggplot2_obj <- MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay',
+                    selected_study_names = c('Bell','Chen','Oda'),
+                    xlim = c(0,5)) 
+
+
+ggplot2_obj
+```
+
+
+add external layouts for the return ggplot2 :
+* xlab as Odds ratio
+```{r}
+ggplot2_obj <- MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'density',
+                    layout_type = 'overlay',
+                    by = 'color',
+                    xlim = c(0,5)) 
+  
+
+ggplot2_obj + xlab('Odds Ratio')  + ggtitle('OR ration for XX cancer')
+ggplot2_obj
+```
+
+
+
+
+###  side by side density: 
+
+
+density plot: side by side, default
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side')
+
+```
+set xlim between 0 to 5; add vetical line at OR = 1
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side',
+                    add_vertical = 1,
+                    xlim = c(0,5))
+
+```
+
+
+select 3 studies: study_name in c('Bell','Chen','Oda')
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, 
+                    plot_type = 'density',
+                    layout_type = 'side_by_side',
+                    selected_study_names = c('Bell','Chen','Oda'),
+                    xlim = c(0,5))
+
+```
+
+
+
+
+### Forest plot
+
+forest plot: default
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'forest')
+
+```
+add vertical line at OR = 1
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio')
+
+```
+
+forest plot: add vertical line and set digit = 2 (need to re-run summary method)
+```{r}
+multiple_tables_obj_exact <- MultipleTables.summary(multiple_tables_obj_exact, alpha = 0.05, digit = 2,
+                       verbose = FALSE)
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio')
+
+```
+display OR in log scale
+
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'forest', add_vertical =  1) +
+  xlab('Odds ratio') +  scale_x_continuous(trans='log10')
+
+```
+
+
+forest plot: not show the CIs
+```{r}
+MultipleTables.plot(multiple_tables_obj_exact, plot_type = 'forest', add_vertical =  1, show_CI = FALSE) +
+  xlab('Odds ratio')
+
+```
+

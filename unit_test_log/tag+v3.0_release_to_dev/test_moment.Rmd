@@ -1,0 +1,153 @@
+---
+title: "Test exact moment function: computation-exact-moment.R "
+author: "Jiajie Chen, Xiao Su"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+
+rhoBoundarySarmanov <- function(a1, b1, a2, b2){
+  cc <- sqrt(a1*a2*b1*b2)/sqrt((a1+b1+1)*(a2+b2+1))
+  upper_bound <- cc/max(a1*b2, a2*b1)
+  lower_bound <- -cc/max(a1*a2, b1*b2)
+  rho_range<-c(lower_bound,upper_bound)
+  names(rho_range)<-c("lower_bound","upper_bound")
+  return(rho_range)
+}
+
+source_files <- function(files){
+  for(i in 1:length(files)){
+    source(files[i])
+  }
+}
+
+```
+
+## Create test cases
+
+
+```{r}
+num_cases <- 5000
+set.seed(1000)
+a1 <- runif( num_cases , min = 0.001 , max = 200)
+b1 <- runif( num_cases , min = 0.001 , max = 200)
+a2 <- runif( num_cases , min = 0.001 , max = 200)
+b2 <- runif( num_cases , min = 0.001 , max = 200)
+theta <- runif( num_cases , min = 0.001 , max = 50)
+n1 <- sample(1:1000,num_cases,replace=T)
+n2 <- sample(1:1000,num_cases,replace=T)
+model <- sample(c('Sarmanov','Independent'), size=num_cases, replace=TRUE)
+measure <- sample(c('OR','RR'), size=num_cases, replace=TRUE)
+test_cases <- data.frame(theta,a1,b1,a2,b2, n1, n2, model, measure)
+## sample rho and y1, y2
+rho <- rep(0, num_cases)
+y1 <- rep(0, num_cases)
+y2 <- rep(0, num_cases)
+for(i in 1:num_cases){
+  rho_range <- rhoBoundarySarmanov(test_cases[i,'a1'], test_cases[i,'b1'], test_cases[i,'a2'],
+                      test_cases[i,'b2']) 
+  rho[i] <- runif( 1 , min = rho_range[1] , max = rho_range[2])
+  y1[i] <- sample(0:test_cases[i,'n1'],1,replace=T)
+  y2[i] <- sample(0:test_cases[i,'n2'],1,replace=T)
+}
+test_cases['rho'] <- rho 
+test_cases['y1'] <- y1 
+test_cases['y2'] <- y2
+head(test_cases)
+save(source_files,test_cases,file = 'test_cases.rda')
+```
+
+## Old version
+
+
+```{r, results='hide'}
+rm(list = ls())
+load(file = 'test_cases.rda')
+options(warn=-1)
+old_verrsion_path <- c('G:/My Drive/ShareFolder/mmeta_package/working/mmeta/R/computation.R', 
+                       'G:/My Drive/ShareFolder/mmeta_package/working/mmeta/R/densityfunction.R')
+source_files(old_verrsion_path)
+
+test_cases['moment_old'] <- rep(NA, nrow(test_cases))
+for(i in 1:nrow(test_cases)){
+  test_cases[i,'moment_old']  <- moment.function(k = 1,
+                                                 a1=test_cases[i,'a1'],
+                                                 b1=test_cases[i,'b1'],
+                                                 a2=test_cases[i,'a2'],
+                                                 b2=test_cases[i,'b2'],
+                                                 rho=test_cases[i,'rho'],
+                                                 y1=test_cases[i,'y1'],
+                                                 y2=test_cases[i,'y2'],
+                                                 n1=test_cases[i,'n1'],
+                                                n2=test_cases[i,'n2'],
+                                                measure=test_cases[i,'measure'],
+                                                model=test_cases[i,'model']) 
+  
+}
+
+
+save(source_files, test_cases,file = 'test_cases.rda')
+
+```
+
+
+
+
+## New version
+
+```{r, results='hide'}
+rm(list = ls())
+load(file = 'test_cases.rda')
+
+options(warn=-1)
+new_verrsion_path <- c('G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/computation-exact-moment.R',
+                       'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/computation-exact-density.R',
+                       'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/config-global-constant.R')
+source_files(new_verrsion_path)
+
+test_cases['moment_new'] <- rep(NA, nrow(test_cases))
+for(i in 1:nrow(test_cases)){
+  parms_prior <- list(a1=test_cases[i,'a1'],b1=test_cases[i,'b1'],a2=test_cases[i,'a2'],
+                      b2=test_cases[i,'b2'], rho=test_cases[i,'rho'])
+  data <- list(y1=test_cases[i,'y1'], y2=test_cases[i,'y2'], 
+               n1=test_cases[i,'n1'],n2=test_cases[i,'n2'])
+  test_cases[i,'moment_new']  <- kthMomentExact(parms_prior = parms_prior, 
+                                                       data = data ,
+                                                       measure=test_cases[i,'measure'], 
+                                                       model=test_cases[i,'model'], 
+                                                       kth=1)
+  
+}
+
+
+
+```
+
+
+## Comparison
+
+```{r}
+
+test_cases['diff_old_new'] <- abs(test_cases['moment_new'] - test_cases['moment_old'])
+head(test_cases)
+
+```
+
+
+```{r}
+summary(test_cases['diff_old_new'] )
+
+```
+
+
+
+```{r}
+file.remove('test_cases.rda')
+
+
+```
+

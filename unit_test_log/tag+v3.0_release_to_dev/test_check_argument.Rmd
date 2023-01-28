@@ -1,0 +1,244 @@
+---
+title: "Test overall measure estimation functions: utility-check-argument.R "
+author: "Jiajie Chen, Xiao Su"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+
+source_files <- function(files){
+  for(i in 1:length(files)){
+    source(files[i])
+  }
+}
+
+new_verrsion_path <- c('G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/utility-check-argument.R',
+                       'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/config-global-constant.R',
+                       'G:/My Drive/ShareFolder/mmeta_package/working/new_mmeta_dev/func_dev/utility-others.R')
+
+source_files(new_verrsion_path)
+```
+
+## checkModelArgument
+
+valid input
+```{r}
+checkModelArgument('Sarmanov')
+```
+
+null input
+```{r}
+try(checkModelArgument(NULL))
+```
+illegal input
+
+```{r}
+try(checkModelArgument('lm'))
+
+```
+
+## checkMethodArgument
+
+valid input
+```{r}
+try(checkMethodArgument('sampling'))
+```
+
+
+null input
+```{r}
+try(checkMethodArgument(NULL))
+```
+
+illegal input
+
+```{r}
+try(checkMethodArgument('sample'))
+```
+
+
+## checkModelParameters
+
+valid input
+```{r}
+try(checkModelParameters(a1 = 1, b1= 1, a2 = 1, b2 = 1, rho = 0, model = 'Sarmanov'))
+```
+
+rho is out of boundary.
+
+```{r}
+try(checkModelParameters(a1 = 1, b1= 1, a2 = 1, b2 = 1, rho = 0.5, model = 'Sarmanov'))
+```
+
+negative parameters
+```{r}
+try(checkModelParameters(a1 = 1, b1= 1, a2 = 1, b2 = -1, rho = 0.5, model = 'Sarmanov'))
+```
+
+Null parameter
+
+```{r}
+try(checkModelParameters(a1 = 1, b1= 1, a2 = 1, b2 = NULL, rho = 0.5, model = 'Sarmanov'))
+```
+
+## checkSingleTableData
+
+valid input
+```{r}
+try(checkSingleTableData(y1 = 30, n1 = 51, y2 = 40, n2 = 60))
+```
+
+y1 > n1
+
+```{r}
+try(checkSingleTableData(y1 = 61, n1 = 51, y2 = 20, n2 = 39))
+```
+
+y2 > n2
+
+```{r}
+try(checkSingleTableData(y1 = 30, n1 = 51, y2 = 40, n2 = 39))
+```
+
+length(y1) > 1
+
+```{r}
+try(checkSingleTableData(y1 = c(30,21), n1 = 51, y2 = 40, n2 = 39))
+```
+
+
+## checkMultipleTablesData
+
+valid input
+```{r}
+load('G:/My Drive/ShareFolder/mmeta_package/working/mmeta/data/colorectal.rda')
+data <- colorectal
+data['study_name'] <- data['studynames']
+try(checkMultipleTablesData(data))
+
+```
+
+null input
+```{r}
+try(checkMultipleTablesData(NULL))
+
+
+```
+column 'study_name' is missing.
+
+```{r}
+try(checkMultipleTablesData(colorectal))
+
+```
+
+
+y1 > n1 for one study
+```{r}
+test_data <- data
+test_data[14,'y1'] <- 400
+try(checkMultipleTablesData(test_data))
+
+```
+
+duplicated study names
+
+```{r}
+test_data <- data
+test_data[1,'study_name'] <- 'Lang'
+try(checkMultipleTablesData(test_data))
+
+```
+
+
+
+## checkHesesianMat
+
+valid input
+```{r}
+sar_mat_template <- matrix( c(-3.607379e+01 , 3.001928e+01 , 3.491566e+00, -3.553578e+00 , 1.250555e-05,
+                               3.001928e+01 ,-3.309083e+01, -3.507144e+00,  3.576321e+00, -1.455192e-05,
+                                3.491566e+00, -3.507144e+00, -4.152234e+01,  3.671382e+01 , 7.503331e-06,
+                               -3.553578e+00 , 3.576321e+00 , 3.671382e+01, -4.082029e+01 ,-1.023182e-05,
+                              1.250555e-05, -1.455192e-05 , 7.503331e-06, -1.023182e-05, -4.752110e-05
+                            ),nrow=5,ncol=5,byrow=TRUE)
+checkHesesianMat(sar_mat_template)
+
+```
+
+negative  hessian is not positive definite.
+
+```{r}
+sar_mat_template <- matrix( c(-3.607379e+01 , 3.001928e+01 , 3.491566e+00, -3.553578e+00 , 1.250555e-05,
+                               3.001928e+01 ,
+                              3.309083e+01, -3.507144e+00,  3.576321e+00, -1.455192e-05,
+                                3.491566e+00, -3.507144e+00, -4.152234e+01,  3.671382e+01 , 7.503331e-06,
+                               -3.553578e+00 , 3.576321e+00 , 3.671382e+01, -4.082029e+01 ,-1.023182e-05,
+                              1.250555e-05, -1.455192e-05 , 7.503331e-06, -1.023182e-05, -4.752110e-05
+                            ),nrow=5,ncol=5,byrow=TRUE)
+try(checkHesesianMat(sar_mat_template))
+
+```
+
+mat contains NA values.
+
+```{r}
+sar_mat_template <- matrix( c(NA , 3.001928e+01 , 3.491566e+00, -3.553578e+00 , 1.250555e-05,
+                               3.001928e+01 ,-3.309083e+01, -3.507144e+00,  3.576321e+00, -1.455192e-05,
+                                3.491566e+00, -3.507144e+00, -4.152234e+01,  3.671382e+01 , 7.503331e-06,
+                               -3.553578e+00 , 3.576321e+00 , 3.671382e+01, -4.082029e+01 ,-1.023182e-05,
+                              1.250555e-05, -1.455192e-05 , 7.503331e-06, -1.023182e-05, -4.752110e-05
+                            ),nrow=5,ncol=5,byrow=TRUE)
+try(checkHesesianMat(sar_mat_template))
+```
+
+
+Hessian matrix contains inifite values.
+```{r}
+sar_mat_template <- matrix( c(3.607379e+01 , 3.001928e+01 , 3.491566e+00, -3.553578e+00 , 1.250555e-05,
+                               Inf ,-3.309083e+01, -3.507144e+00,  3.576321e+00, -1.455192e-05,
+                                3.491566e+00, -3.507144e+00, -4.152234e+01,  3.671382e+01 , 7.503331e-06,
+                               -3.553578e+00 , 3.576321e+00 , 3.671382e+01, -4.082029e+01 ,-1.023182e-05,
+                              1.250555e-05, -1.455192e-05 , 7.503331e-06, -1.023182e-05, -4.752110e-05
+                            ),nrow=5,ncol=5,byrow=TRUE)
+try(checkHesesianMat(sar_mat_template))
+```
+
+The hessian matrix is not symmetric.
+```{r}
+sar_mat_template <- matrix( c(-3.607379e+01 , 40.001928e+01 , 3.491566e+00, -3.553578e+00 , 1.250555e-05,
+                               3.001928e+01 ,-3.309083e+01, -3.507144e+00,  3.576321e+00, -1.455192e-05,
+                                3.491566e+00, -3.507144e+00, -4.152234e+01,  3.671382e+01 , 7.503331e-06,
+                               -3.553578e+00 , 3.576321e+00 , 3.671382e+01, -4.082029e+01 ,-1.023182e-05,
+                              1.250555e-05, -1.455192e-05 , 7.503331e-06, -1.023182e-05, -4.752110e-05
+                            ),nrow=5,ncol=5,byrow=TRUE)
+try(checkHesesianMat(sar_mat_template))
+
+```
+
+
+
+
+
+
+
+The dimention of hessian matrix is incorrect.
+```{r}
+sar_mat_template <- matrix( c(-3.607379e+01 , 3.001928e+01 , 3.491566e+00, 
+                               3.001928e+01 ,-3.309083e+01, -3.507144e+00,  
+                                3.491566e+00, -3.507144e+00, -4.152234e+01
+                            ),nrow=3,ncol=3,byrow=TRUE)
+try(checkHesesianMat(sar_mat_template))
+
+```
+
+
+
+
+
+
+
+
+
