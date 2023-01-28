@@ -1,6 +1,12 @@
-# Branch `RCMD_check_log` for `mmeta` repository
+# Branch `check_and_test` for `mmeta` repository
 
 # Purpose 
-This branch was created to save the check log and error.
+The purpose of this branch is to save the following files for development process:
+* check log using R CMD check: folder `check_log`
+* error log using R CMD check: folder `error_log`
+* unit test log: folder`unit_test_log`
+* edge cases test log:folder `edge_test_log`
+* user acceptance test log: folder `UAT_log`
+
 
 
