@@ -1,18 +1,32 @@
 # Development repsitory for mmeta package
 
 
+## Repositories
+Four repositories host the mmeta package:
+* Primary development GitHub repository(private) in Penncil is avaialble [https://github.com/Penncil/mmeta_dev] 
+    * primary repository for development
+    * all release versions and versions under development
+    * documents related to the packages: design documents, change request forms, tickets and test results, ect.
+* Release GitHub repository(public) in Penncil is available [https://github.com/Penncil/mmeta]
+    * Only latest release verion in main branch
+* CRAN hosts mmeta package available at [https://cran.r-project.org/web/packages/mmeta/index.html]
+    * Maintainer: Jiajie Chen <jiajie.chen@pennmedicine.upenn.edu>
+* Downstream private GitHub repository in Xiao Su's GitHub account [https://github.com/esuxiao/mmeta]
+    * mirror of primary development GitHub repository
 
-## Host repository
-* CRAN hosts mmeta package available at [here](https://cran.r-project.org/web/packages/mmeta/index.html). 
-* Downstream public GitHub repository at [here]()
-* Downstream private GitHub repository at [here]()
+## How to release new version to release repository
+```
+
+```
+
+
 
 ## Important branches
 * `main`: [main branch which saves the current released version]()
 * `check_and_test`: [save the check log and test results](https://github.com/esuxiao/mmeta/tree/check_and_test)
 * `dev`: [branch for major development]()
 * `design_doc`: [save the design documents](https://github.com/esuxiao/mmeta/tree/design_doc)
-* `change_request`: [save the change request forms and tickets]
+* `change_request`: [save the change request forms and tickets](https://github.com/esuxiao/mmeta/tree/change_request)
 
 
 ## Related papers
