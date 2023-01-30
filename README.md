@@ -1,7 +1,7 @@
 # Branch `change_request` for repository 'mmeta_dev'
 
 
-## Folders
+## Folders and files
 * `change_request`: save the change request form
     * reasons for change
     * requests
@@ -12,4 +12,4 @@
     * related emails and messages
 * `msg_emails`: important emails and notification
 * `tickets`: tasks in details 
-* `work_log`: timeline for chenge requests and tickets
+* `work_log.md`: timeline for chenge requests and tickets
